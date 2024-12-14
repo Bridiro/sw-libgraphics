@@ -15,7 +15,7 @@
  * alpha: The "opaqueness" of the pixels, 0 for background, 255 for text.
  * state: Free variable that was passed to render_character().
  */
-typedef void (*mf_pixel_callback_t) (int32_t x, int32_t y, uint8_t count,
+typedef void (*mf_pixel_callback_t) (int16_t x, int16_t y, uint8_t count,
                                      uint8_t alpha, void *state);
 
 /* General information about a font. */

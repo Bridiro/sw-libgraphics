@@ -4,7 +4,7 @@ struct GraphicsAPI *api = NULL;
 
 extern const struct mf_rlefont_s mf_rlefont_KonexyFont72;
 
-void _pixel_callback(int32_t x, int32_t y, uint8_t count, uint8_t alpha, void *state) {
+void _pixel_callback(int16_t x, int16_t y, uint8_t count, uint8_t alpha, void *state) {
     struct font_color_s *rstate = state;
     while (count--) {
         api->draw_pixel(x, y, rstate->color | alpha << 24);

@@ -6,8 +6,7 @@ include $(MFDIR)/mcufont.mk
 
 # Compilatore e flags
 CC = gcc
-CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -g
-LDFLAGS =
+CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -g 
 
 # Directory
 SRC_DIR = src
@@ -23,11 +22,11 @@ all: $(TARGET)
 
 # Creazione dell'eseguibile
 $(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
+	$(CC) $(OBJECTS) -o $@ $(MFSRC) $(CFLAGS)
 
 # Compilazione dei file oggetto
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) -c $< -o $@ $(CFLAGS)
 
 # Creazione della directory degli oggetti
 $(OBJ_DIR):
