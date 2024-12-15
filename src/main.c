@@ -67,8 +67,8 @@ int main() {
 
     // Definizione dei widget
     struct Widget widgets[] = {
-        {{5, 5, 200, 200}, 0xffff0000, 0xffffffff, 0.2, "Hello, SDL!"},
-        {{210, 5, 200, 200}, 0xff00ff00, 0xffffffff, 0.2, "Graphics Demo"}
+        {{5, 5, 200, 200}, 0xffff0000, 0xffffffff, 0.3, CENTER, 100, 50, "Hello, SDL!"},
+        {{210, 5, 200, 200}, 0xff00ff00, 0xffffffff, 0.3, CENTER, 100, 50, "Graphics Demo"}
     };
 
     // Ciclo principale

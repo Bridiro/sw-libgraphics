@@ -34,14 +34,14 @@ void init_graphics_api(struct GraphicsAPI *a) {
     api = a;
 }
 
-void draw_text_box(struct Rect rect, uint32_t bg_color, uint32_t fg_color, const char *text, float font_size) {
-    api->draw_rectangle(rect.x, rect.y, rect.w, rect.h, bg_color);
-    _draw_text(rect.x, rect.y, MF_ALIGN_LEFT, text, fg_color, font_size);
+void draw_text_box(const struct Widget *widget) {
+    api->draw_rectangle(widget->rect.x, widget->rect.y, widget->rect.w, widget->rect.h, widget->bg_color);
+    _draw_text(widget->rect.x + widget->text_x, widget->rect.y + widget->text_y, (enum mf_align_t) widget->font_aling, widget->text, widget->fg_color, widget->font_size);
 }
 
 void render_interface(const struct Widget *widgets, uint16_t num) {
     for (int i=0; i<num; i++) {
-        draw_text_box(widgets[i].rect, widgets[i].bg_color, widgets[i].fg_color, widgets[i].text, widgets[i].font_size);
+        draw_text_box(&widgets[i]);
     }
 }
 
