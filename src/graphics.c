@@ -22,7 +22,7 @@ uint8_t _char_callback(int16_t x0, int16_t y0, mf_char character, void *state)
     return mf_render_character(&scaled_font.font, x0, y0, character, &_pixel_callback, state);
 }
 
-void _draw_text(int16_t x, int16_t y, enum mf_align_t align, const char *text, uint32_t color, float size)
+void _draw_text(int16_t x, int16_t y, enum mf_align_t align, char *text, uint32_t color, float size)
 {
     struct mf_scaledfont_s scaled_font;
     mf_scale_font(&scaled_font, &mf_rlefont_KonexyFont72.font, size, size);
@@ -38,7 +38,7 @@ void init_graphics_api(struct GraphicsAPI *a)
     api = a;
 }
 
-void draw_text_box(const struct Widget *widget)
+void draw_text_box(struct Widget *widget)
 {
     api->draw_rectangle(widget->rect.x,
                         widget->rect.y,
@@ -54,7 +54,7 @@ void draw_text_box(const struct Widget *widget)
                widget->font_size);
 }
 
-void render_interface(const struct Widget *widgets, uint16_t num)
+void render_interface(struct Widget *widgets, uint16_t num)
 {
     api->clear_screen();
     for (int i = 0; i < num; i++)

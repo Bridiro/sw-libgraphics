@@ -38,12 +38,12 @@ struct Widget
     enum FontAlign font_aling;
     uint32_t text_x;
     uint32_t text_y;
-    const char *text;
+    char *text;
 };
 
 void init_graphics_api(struct GraphicsAPI *a);
-void draw_text_box(const struct Widget *widget);
-void render_interface(const struct Widget *widgets, uint16_t num);
+void draw_text_box(struct Widget *widget);
+void render_interface(struct Widget *widgets, uint16_t num);
 uint8_t get_alpha(uint32_t color);
 uint8_t get_red(uint32_t color);
 uint8_t get_green(uint32_t color);

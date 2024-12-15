@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include "SDL_timer.h"
 #include "graphics.h"
 
 #define WINDOW_WIDTH 800
@@ -77,8 +78,12 @@ int main()
 
     // Definizione dei widget
     struct Widget widgets[] = {
-        {{5, 5, 200, 200}, 0xffff0000, 0xffffffff, 0.25, CENTER, 100, 50, "Hello, SDL"},
-        {{210, 5, 200, 200}, 0xff00ff00, 0xffffffff, 0.25, CENTER, 100, 50, "Graphics Demo"}};
+        {{5, 5, 260, 233}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "a"},
+        {{270, 5, 260, 233}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "b"},
+        {{535, 5, 260, 233}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "c"},
+        {{5, 243, 260, 232}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "d"},
+        {{270, 243, 260, 232}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "e"},
+        {{535, 243, 260, 232}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "f"}};
 
     // Ciclo principale
     int running = 1;
@@ -94,11 +99,11 @@ int main()
         }
 
         // Pulisci lo schermo
-        SDL_SetRenderDrawColor(sdl_ctx.renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(sdl_ctx.renderer, 255, 255, 255, 255);
         SDL_RenderClear(sdl_ctx.renderer);
 
         // Renderizza i widget
-        render_interface(widgets, 2);
+        render_interface(widgets, 6);
 
         // Mostra il risultato
         SDL_RenderPresent(sdl_ctx.renderer);
