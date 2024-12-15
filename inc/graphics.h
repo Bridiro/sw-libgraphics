@@ -29,6 +29,10 @@ struct Widget {
 void init_graphics_api(struct GraphicsAPI *a);
 void draw_text_box(struct Rect rect, uint32_t bg_color, uint32_t fg_color, const char *text);
 void render_interface(const struct Widget *widgets, uint16_t num);
+uint8_t get_alpha(uint32_t color);
+uint8_t get_red(uint32_t color);
+uint8_t get_green(uint32_t color);
+uint8_t get_blue(uint32_t color);
 
 #endif // GRAPHICS_H
 

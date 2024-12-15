@@ -6,7 +6,7 @@ include $(MFDIR)/mcufont.mk
 
 # Compilatore e flags
 CC = gcc
-CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -g 
+CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -g -lSDL2 -lm
 
 # Directory
 SRC_DIR = src

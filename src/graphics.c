@@ -45,3 +45,18 @@ void render_interface(const struct Widget *widgets, uint16_t num) {
     }
 }
 
+uint8_t get_alpha(uint32_t color) {
+    return (color >> 24) & 0xff;
+}
+
+uint8_t get_red(uint32_t color) {
+    return (color >> 16) & 0xff;
+}
+
+uint8_t get_green(uint32_t color) {
+    return (color >> 8) & 0xff;
+}
+
+uint8_t get_blue(uint32_t color) {
+    return color & 0xff;
+}
