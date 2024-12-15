@@ -6,7 +6,8 @@ include $(MFDIR)/mcufont.mk
 
 # Compilatore e flags
 CC = gcc
-CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -g -lSDL2 -lm
+CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -g -I/opt/homebrew/Cellar/sdl2/2.30.10/include/SDL2
+LDFLAGS = -lSDL2 -lm -L/opt/homebrew/Cellar/sdl2/2.30.10/lib
 
 # Directory
 SRC_DIR = src
@@ -22,7 +23,7 @@ all: $(TARGET)
 
 # Creazione dell'eseguibile
 $(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $@ $(MFSRC) $(CFLAGS)
+	$(CC) $(OBJECTS) -o $@ $(MFSRC) $(CFLAGS) $(LDFLAGS)
 
 # Compilazione dei file oggetto
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
