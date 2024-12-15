@@ -23,6 +23,7 @@ enum FontAlign {
 struct GraphicsAPI {
     void (*draw_pixel)(int x, int y, uint32_t color);
     void (*draw_rectangle)(int x, int y, int w, int h, uint32_t color);
+    void (*clear_screen)();
 };
 
 struct Widget {

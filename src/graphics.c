@@ -40,6 +40,7 @@ void draw_text_box(const struct Widget *widget) {
 }
 
 void render_interface(const struct Widget *widgets, uint16_t num) {
+    api->clear_screen();
     for (int i=0; i<num; i++) {
         draw_text_box(&widgets[i]);
     }

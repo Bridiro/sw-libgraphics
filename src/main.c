@@ -10,6 +10,9 @@ typedef struct {
     SDL_Renderer *renderer;
 } SDLContext;
 
+void sdl_clear_screen() {  
+}
+
 // Funzione per disegnare un pixel utilizzando SDL
 void sdl_draw_pixel(int x, int y, uint32_t color) {
     SDL_SetRenderDrawColor(SDL_GetRenderer(SDL_GetWindowFromID(1)),
@@ -61,7 +64,8 @@ int main() {
     // Definizione delle API grafiche
     struct GraphicsAPI api = {
         .draw_pixel = sdl_draw_pixel,
-        .draw_rectangle = sdl_draw_rectangle
+        .draw_rectangle = sdl_draw_rectangle,
+        .clear_screen = sdl_clear_screen
     };
     init_graphics_api(&api);
 
