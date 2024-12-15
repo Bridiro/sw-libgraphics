@@ -37,6 +37,9 @@ $(OBJ_DIR):
 clean:
 	rm -rf $(OBJ_DIR) $(TARGET)
 
+run: $(TARGET)
+	./$<
+
 # Regole ausiliarie
 .PHONY: all clean
 
