@@ -27,7 +27,8 @@ struct scaled_renderstate
     int16_t y0;
 };
 
-struct font_color_s {
+struct font_color_s
+{
     struct mf_scaledfont_s* font;
     uint32_t color;
 };

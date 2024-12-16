@@ -78,12 +78,12 @@ int main()
 
     // Definizione dei widget
     struct Widget widgets[] = {
-        {{5, 5, 260, 233}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "a"},
-        {{270, 5, 260, 233}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "b"},
-        {{535, 5, 260, 233}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "c"},
-        {{5, 243, 260, 232}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "d"},
-        {{270, 243, 260, 232}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "e"},
-        {{535, 243, 260, 232}, 0xff000000, 0xffffffff, 2.0, CENTER, 130, 40, "f"}};
+        {{5, 5, 260, 233}, 0xffff0000, 0xff00ffff, 1.0, CENTER, 130, 40, "a"},
+        {{270, 5, 260, 233}, 0xff00ff00, 0xffff00ff, 1.0, CENTER, 130, 40, "b"},
+        {{535, 5, 260, 233}, 0xff0000ff, 0xffffff00, 1.0, CENTER, 130, 40, "c"},
+        {{5, 243, 260, 232}, 0xffff00ff, 0xff00ff00, 1.0, CENTER, 130, 40, "d"},
+        {{270, 243, 260, 232}, 0xffffff00, 0xff0000ff, 1.0, CENTER, 130, 40, "e"},
+        {{535, 243, 260, 232}, 0xff00ffff, 0xffff0000, 1.0, CENTER, 130, 40, "f"}};
 
     // Ciclo principale
     int running = 1;

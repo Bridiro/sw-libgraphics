@@ -2,7 +2,7 @@
 MCUFONT = ../encoder/mcufont
 
 # Names of fonts to process
-FONTS = KonexyFont32
+FONTS = KonexyFont140
 
 # Characters to include in the fonts
 CHARS = 0-255 0x2010-0x2015
@@ -18,8 +18,8 @@ fonts.h: $(FONTS:=.c)
 %.c: %.dat $(MCUFONT)
 	$(MCUFONT) rlefont_export $<
 
-KonexyFont32.dat: KonexyFont.ttf
-	$(MCUFONT) import_ttf $< 32
+KonexyFont140.dat: KonexyFont.ttf
+	$(MCUFONT) import_ttf $< 140
 	$(MCUFONT) filter $@ $(CHARS)
 	$(MCUFONT) rlefont_optimize $@ 50
 

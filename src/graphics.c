@@ -2,7 +2,7 @@
 
 struct GraphicsAPI *api = NULL;
 
-extern const struct mf_rlefont_s mf_rlefont_KonexyFont72;
+extern const struct mf_rlefont_s mf_rlefont_KonexyFont140;
 
 void _pixel_callback(int16_t x, int16_t y, uint8_t count, uint8_t alpha, void *state)
 {
@@ -16,16 +16,14 @@ void _pixel_callback(int16_t x, int16_t y, uint8_t count, uint8_t alpha, void *s
 
 uint8_t _char_callback(int16_t x0, int16_t y0, mf_char character, void *state)
 {
-    float size = ((struct font_color_s *)state)->font->x_scale;
-    struct mf_scaledfont_s scaled_font;
-    mf_scale_font(&scaled_font, &mf_rlefont_KonexyFont72.font, size, size);
-    return mf_render_character(&scaled_font.font, x0, y0, character, &_pixel_callback, state);
+    struct mf_scaledfont_s *font = ((struct font_color_s *) state)->font;
+    return mf_render_character(&(font->font), x0, y0, character, &_pixel_callback, state);
 }
 
 void _draw_text(int16_t x, int16_t y, enum mf_align_t align, char *text, uint32_t color, float size)
 {
     struct mf_scaledfont_s scaled_font;
-    mf_scale_font(&scaled_font, &mf_rlefont_KonexyFont72.font, size, size);
+    mf_scale_font(&scaled_font, &mf_rlefont_KonexyFont140.font, size, size);
     struct font_color_s mf_data = (struct font_color_s) {
         .font = &scaled_font,
         .color = color,
