@@ -34,7 +34,7 @@ struct GraphicsAPI
     void (*clear_screen)();
 };
 
-struct Widget
+struct TextBox
 {
     struct Rect rect;
     uint32_t bg_color;
@@ -46,7 +46,7 @@ struct Widget
 };
 
 void init_graphics_api(struct GraphicsAPI *a);
-void render_interface(struct Widget *widgets, uint16_t num);
+void render_interface(struct TextBox *text_boxes, uint16_t num);
 uint8_t get_alpha(uint32_t color);
 uint8_t get_red(uint32_t color);
 uint8_t get_green(uint32_t color);

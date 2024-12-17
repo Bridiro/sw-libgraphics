@@ -20,7 +20,7 @@ uint8_t _char_callback(int16_t x0, int16_t y0, mf_char character, void *state)
     return mf_render_character(&(font->font), x0, y0, character, &_pixel_callback, state);
 }
 
-void _draw_text(int16_t x, int16_t y, enum mf_align_t align, char *text, uint32_t color, float size)
+void _draw_text(int16_t x, int16_t y, enum FontAlign align, char *text, uint32_t color, float size)
 {
     struct mf_scaledfont_s scaled_font;
     mf_scale_font(&scaled_font, &mf_rlefont_KonexyFont140.font, size, size);
@@ -28,23 +28,23 @@ void _draw_text(int16_t x, int16_t y, enum mf_align_t align, char *text, uint32_
         .font = &scaled_font,
         .color = color,
     };
-    mf_render_aligned(&scaled_font.font, x, y, align, text, strlen(text), &_char_callback, (void *)&mf_data);
+    mf_render_aligned(&scaled_font.font, x, y, (enum mf_align_t) align, text, strlen(text), &_char_callback, (void *)&mf_data);
 }
 
-void _draw_text_box(struct Widget *widget)
+void _draw_text_box(struct TextBox *text_box)
 {
-    api->draw_rectangle(widget->rect.x,
-                        widget->rect.y,
-                        widget->rect.w,
-                        widget->rect.h,
-                        widget->bg_color);
+    api->draw_rectangle(text_box->rect.x,
+                        text_box->rect.y,
+                        text_box->rect.w,
+                        text_box->rect.h,
+                        text_box->bg_color);
 
-    _draw_text(widget->rect.x + widget->text_pos.x,
-               widget->rect.y + widget->text_pos.y,
-               (enum mf_align_t)widget->font_aling,
-               widget->text,
-               widget->fg_color,
-               widget->font_size);
+    _draw_text(text_box->rect.x + text_box->text_pos.x,
+               text_box->rect.y + text_box->text_pos.y,
+               text_box->font_aling,
+               text_box->text,
+               text_box->fg_color,
+               text_box->font_size);
 }
 
 void init_graphics_api(struct GraphicsAPI *a)
@@ -52,12 +52,12 @@ void init_graphics_api(struct GraphicsAPI *a)
     api = a;
 }
 
-void render_interface(struct Widget *widgets, uint16_t num)
+void render_interface(struct TextBox *text_boxes, uint16_t num)
 {
     api->clear_screen();
     for (int i = 0; i < num; i++)
     {
-        _draw_text_box(widgets + i);
+        _draw_text_box(text_boxes + i);
     }
 }
 
