@@ -31,12 +31,7 @@ void _draw_text(int16_t x, int16_t y, enum mf_align_t align, char *text, uint32_
     mf_render_aligned(&scaled_font.font, x, y, align, text, strlen(text), &_char_callback, (void *)&mf_data);
 }
 
-void init_graphics_api(struct GraphicsAPI *a)
-{
-    api = a;
-}
-
-void draw_text_box(struct Widget *widget)
+void _draw_text_box(struct Widget *widget)
 {
     api->draw_rectangle(widget->rect.x,
                         widget->rect.y,
@@ -44,12 +39,17 @@ void draw_text_box(struct Widget *widget)
                         widget->rect.h,
                         widget->bg_color);
 
-    _draw_text(widget->rect.x + widget->text_x,
-               widget->rect.y + widget->text_y,
+    _draw_text(widget->rect.x + widget->text_pos.x,
+               widget->rect.y + widget->text_pos.y,
                (enum mf_align_t)widget->font_aling,
                widget->text,
                widget->fg_color,
                widget->font_size);
+}
+
+void init_graphics_api(struct GraphicsAPI *a)
+{
+    api = a;
 }
 
 void render_interface(struct Widget *widgets, uint16_t num)
@@ -57,7 +57,7 @@ void render_interface(struct Widget *widgets, uint16_t num)
     api->clear_screen();
     for (int i = 0; i < num; i++)
     {
-        draw_text_box(&widgets[i]);
+        _draw_text_box(widgets + i);
     }
 }
 
