@@ -77,7 +77,7 @@ int main()
     init_graphics_api(&api);
 
     // Definizione dei widget
-    struct Widget widgets[] = {
+    struct TextBox text_boxes[] = {
         { { 5, 5, 260, 233 }, 0xffff0000, 0xff00ffff, 1.0, CENTER, { 130, 40 }, "a" },
         { { 270, 5, 260, 233 }, 0xff00ff00, 0xffff00ff, 1.0, CENTER, { 130, 40 }, "b" },
         { { 535, 5, 260, 233 }, 0xff0000ff, 0xffffff00, 1.0, CENTER, { 130, 40 }, "c" },
@@ -104,7 +104,7 @@ int main()
         SDL_RenderClear(sdl_ctx.renderer);
 
         // Renderizza i widget
-        render_interface(widgets, 6);
+        render_interface(text_boxes, 6);
 
         // Mostra il risultato
         SDL_RenderPresent(sdl_ctx.renderer);

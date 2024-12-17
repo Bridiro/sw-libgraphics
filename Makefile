@@ -4,10 +4,17 @@ FONTDIR = libs/McuFont/fonts
 MFDIR = libs/McuFont/decoder
 include $(MFDIR)/mcufont.mk
 
+OS = $(shell uname -s)
+
 # Compilatore e flags
 CC = gcc
-CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -g -I/opt/homebrew/Cellar/sdl2/2.30.10/include/SDL2
-LDFLAGS = -lSDL2 -lm -L/opt/homebrew/Cellar/sdl2/2.30.10/lib
+CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -g 
+LDFLAGS = -lSDL2 -lm 
+
+ifeq ($(OS), Darwin) 
+	CFLAGS += -I/opt/homebrew/Cellar/sdl2/2.30.10/include/SDL2
+	LDFLAGS += -L/opt/homebrew/Cellar/sdl2/2.30.10/lib
+endif
 
 # Directory
 SRC_DIR = src
@@ -23,6 +30,7 @@ all: $(TARGET)
 
 # Creazione dell'eseguibile
 $(TARGET): $(OBJECTS)
+	@echo "Building for target: $(OS)"
 	$(CC) $(OBJECTS) -o $@ $(MFSRC) $(CFLAGS) $(LDFLAGS)
 
 # Compilazione dei file oggetto
@@ -35,6 +43,7 @@ $(OBJ_DIR):
 
 # Pulizia
 clean:
+	@echo "Cleaning up"
 	rm -rf $(OBJ_DIR) $(TARGET)
 
 run: $(TARGET)
