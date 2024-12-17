@@ -36,6 +36,7 @@ struct GraphicsAPI
 
 struct TextBox
 {
+    uint16_t id;
     struct Rect rect;
     uint32_t bg_color;
     uint32_t fg_color;
@@ -51,5 +52,6 @@ uint8_t get_alpha(uint32_t color);
 uint8_t get_red(uint32_t color);
 uint8_t get_green(uint32_t color);
 uint8_t get_blue(uint32_t color);
+struct TextBox *get_text_box(struct TextBox *text_boxes, uint16_t num, uint16_t id);
 
 #endif // GRAPHICS_H

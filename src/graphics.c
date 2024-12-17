@@ -80,3 +80,13 @@ uint8_t get_blue(uint32_t color)
 {
     return color & 0xff;
 }
+
+struct TextBox *get_text_box(struct TextBox *text_boxes, uint16_t num, uint16_t id)
+{
+    for (int i=0; i<num; i++) {
+        if ((text_boxes + i)->id == id) {
+            return (text_boxes + i);
+        }
+    }
+    return NULL;
+}
