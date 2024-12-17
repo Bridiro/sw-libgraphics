@@ -53,5 +53,6 @@ uint8_t get_red(uint32_t color);
 uint8_t get_green(uint32_t color);
 uint8_t get_blue(uint32_t color);
 struct TextBox *get_text_box(struct TextBox *text_boxes, uint16_t num, uint16_t id);
+uint32_t color_modify_rgb(uint32_t color, int8_t delta);
 
 #endif // GRAPHICS_H

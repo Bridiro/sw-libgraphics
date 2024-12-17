@@ -90,3 +90,22 @@ struct TextBox *get_text_box(struct TextBox *text_boxes, uint16_t num, uint16_t 
     }
     return NULL;
 }
+
+uint32_t color_modify_rgb(uint32_t color, int8_t delta)
+{
+    uint8_t red = get_red(color);
+    uint8_t green = get_green(color);
+    uint8_t blue = get_blue(color);
+
+    if (delta > 0) {
+        red   = (red + delta > 255) ? 255 : red + delta;
+        green = (green + delta > 255) ? 255 : green + delta;
+        blue  = (blue + delta > 255) ? 255 : blue + delta;        
+    } else {
+        red   = (red + delta < 0) ? 0 : red + delta;
+        green = (green + delta < 0) ? 0 : green + delta;
+        blue  = (blue + delta < 0) ? 0 : blue + delta;
+    }
+
+    return (get_alpha(color) << 24) | (red << 16) | (green << 8) | blue;
+}

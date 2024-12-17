@@ -89,6 +89,7 @@ int main()
     // Ciclo principale
     int running = 1;
     SDL_Event event;
+    uint32_t last_modified = SDL_GetTicks();
     while (running)
     {
         while (SDL_PollEvent(&event))
@@ -105,7 +106,11 @@ int main()
 
         // Renderizza i widget
         render_interface(text_boxes, 6);
-
+        if (SDL_GetTicks() - last_modified > 50) {
+            get_text_box(text_boxes, 6, 0x2)->bg_color = color_modify_rgb(get_text_box(text_boxes, 6, 0x2)->bg_color, -0x02);
+            printf("0x%08x\n", get_text_box(text_boxes, 6, 0x1)->bg_color);
+            last_modified = SDL_GetTicks();
+        }
         // Mostra il risultato
         SDL_RenderPresent(sdl_ctx.renderer);
 
