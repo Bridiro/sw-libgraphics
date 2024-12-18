@@ -1,10 +1,8 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include <string.h>
 #include <stdint.h>
 #include <mcufont.h>
-#include <stddef.h>
 
 struct Rect
 {

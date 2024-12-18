@@ -1,4 +1,6 @@
 #include "graphics.h"
+#include <stddef.h>
+#include <string.h>
 
 struct GraphicsAPI *api = NULL;
 

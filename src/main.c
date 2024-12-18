@@ -108,7 +108,6 @@ int main()
         render_interface(text_boxes, 6);
         if (SDL_GetTicks() - last_modified > 50) {
             get_text_box(text_boxes, 6, 0x2)->bg_color = color_modify_rgb(get_text_box(text_boxes, 6, 0x2)->bg_color, -0x02);
-            printf("0x%08x\n", get_text_box(text_boxes, 6, 0x1)->bg_color);
             last_modified = SDL_GetTicks();
         }
         // Mostra il risultato
