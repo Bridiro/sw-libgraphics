@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <stdint.h>
 #include "SDL_timer.h"
 #include "graphics.h"
 
@@ -77,19 +78,22 @@ int main()
     init_graphics_api(&api);
 
     // Definizione dei widget
-    struct TextBox text_boxes[] = {
-        { 0x1, { 5, 5, 260, 233 }, 0xffff0000, 0xff00ffff, 1.0, CENTER, { 130, 40 }, "a" },
-        { 0x2, { 270, 5, 260, 233 }, 0xff00ff00, 0xffff00ff, 1.0, CENTER, { 130, 40 }, "b" },
-        { 0x3, { 535, 5, 260, 233 }, 0xff0000ff, 0xffffff00, 1.0, CENTER, { 130, 40 }, "c" },
-        { 0x4, { 5, 243, 260, 232 }, 0xffff00ff, 0xff00ff00, 1.0, CENTER, { 130, 40 }, "d" },
-        { 0x5, { 270, 243, 260, 232 }, 0xffffff00, 0xff0000ff, 1.0, CENTER, { 130, 40 }, "e" },
-        { 0x6, { 535, 243, 260, 232 }, 0xff00ffff, 0xffff0000, 1.0, CENTER, { 130, 40 }, "f" }
+    struct ColorRange ranges[] = {
+        {0.0f, 50.0f, 0x00FF00, 0x000000},
+        {50.1f, 100.0f, 0xFFFF00, 0x000000},
+        {100.1f, 200.0f, 0xFF0000, 0xFFFFFF}
+    };
+
+    struct Box boxes[] = {
+        { 0x1, { 5, 5, 393, 470 }, 0xff000000, 0xffffffff, create_label("XD", (struct Coords){330, 200}, 0.4, CENTER), create_value(51, false, (struct Coords){140, 170}, 0.6, CENTER, ranges, 3) },
+        { 0x2, { 403, 5, 392, 470 }, 0xff000000, 0xffffffff, create_label("SI", (struct Coords){196, 170}, 0.8, CENTER), NULL },
     };
 
     // Ciclo principale
     int running = 1;
     SDL_Event event;
-    uint32_t last_modified = SDL_GetTicks();
+    uint32_t last_time = SDL_GetTicks();
+    int dir = 1;
     while (running)
     {
         while (SDL_PollEvent(&event))
@@ -105,17 +109,25 @@ int main()
         SDL_RenderClear(sdl_ctx.renderer);
 
         // Renderizza i widget
-        render_interface(text_boxes, 6);
-        if (SDL_GetTicks() - last_modified > 50) {
-            get_text_box(text_boxes, 6, 0x2)->bg_color = color_modify_rgb(get_text_box(text_boxes, 6, 0x2)->bg_color, -0x02);
-            last_modified = SDL_GetTicks();
+        render_interface(boxes, 2);
+
+        if (SDL_GetTicks() - last_time > 60)
+        {
+            struct Box *box = get_box(boxes, 2, 0x1);
+            box->value->value += dir;
+            if (box->value->value > 200)
+                dir = -1;
+            else if (box->value->value < 0)
+                dir = 1;
         }
+
         // Mostra il risultato
         SDL_RenderPresent(sdl_ctx.renderer);
 
         SDL_Delay(16); // Limitazione a ~60 FPS
     }
 
+    free_boxes(boxes, 2);
     // Cleanup di SDL
     SDL_DestroyRenderer(sdl_ctx.renderer);
     SDL_DestroyWindow(sdl_ctx.window);

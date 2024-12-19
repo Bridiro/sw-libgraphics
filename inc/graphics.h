@@ -32,25 +32,53 @@ struct GraphicsAPI
     void (*clear_screen)();
 };
 
-struct TextBox
+struct ColorRange
+{
+    float min;
+    float max;
+    uint32_t bg_color;
+    uint32_t fg_color;  
+};
+
+struct Label
+{
+    char *text;
+    struct Coords pos;
+    float font_size;
+    enum FontAlign aling;
+};
+
+struct Value
+{
+    float value;
+    bool is_float;
+    struct Coords pos;
+    float font_size;
+    enum FontAlign align;
+    struct ColorRange *colors;
+    uint8_t colors_num;
+};
+
+struct Box
 {
     uint16_t id;
     struct Rect rect;
-    uint32_t bg_color;
-    uint32_t fg_color;
-    float font_size;
-    enum FontAlign font_aling;
-    struct Coords text_pos;
-    char *text;
+    uint32_t default_bg_color;
+    uint32_t default_fg_color;
+    struct Label *label;
+    struct Value *value;
 };
 
 void init_graphics_api(struct GraphicsAPI *a);
-void render_interface(struct TextBox *text_boxes, uint16_t num);
+void render_interface(struct Box *boxes, uint16_t num);
 uint8_t get_alpha(uint32_t color);
 uint8_t get_red(uint32_t color);
 uint8_t get_green(uint32_t color);
 uint8_t get_blue(uint32_t color);
-struct TextBox *get_text_box(struct TextBox *text_boxes, uint16_t num, uint16_t id);
+struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id);
 uint32_t color_modify_rgb(uint32_t color, int8_t delta);
+struct Label *create_label(char *text, struct Coords pos, float font_size, enum FontAlign align);
+struct Value *create_value(float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, struct ColorRange *colors, uint8_t colors_num);
+void free_boxes(struct Box *boxes, uint16_t num);
 
 #endif // GRAPHICS_H

@@ -1,6 +1,8 @@
 #include "graphics.h"
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 struct GraphicsAPI *api = NULL;
 
@@ -33,20 +35,50 @@ void _draw_text(int16_t x, int16_t y, enum FontAlign align, char *text, uint32_t
     mf_render_aligned(&scaled_font.font, x, y, (enum mf_align_t) align, text, strlen(text), &_char_callback, (void *)&mf_data);
 }
 
-void _draw_text_box(struct TextBox *text_box)
+void _draw_text_box(struct Box *box)
 {
-    api->draw_rectangle(text_box->rect.x,
-                        text_box->rect.y,
-                        text_box->rect.w,
-                        text_box->rect.h,
-                        text_box->bg_color);
+    uint32_t bg_color = box->default_bg_color;
+    uint32_t fg_color = box->default_fg_color;
 
-    _draw_text(text_box->rect.x + text_box->text_pos.x,
-               text_box->rect.y + text_box->text_pos.y,
-               text_box->font_aling,
-               text_box->text,
-               text_box->fg_color,
-               text_box->font_size);
+    if (box->value && box->value->colors)
+    {
+        for (int i=0; i<box->value->colors_num; i++)
+        {
+            if (box->value->colors[i].min < box->value->value && box->value->value < box->value->colors[i].max)
+            {
+                bg_color = box->value->colors[i].bg_color;
+                fg_color = box->value->colors[i].fg_color;
+            }
+        }
+    }
+
+    api->draw_rectangle(box->rect.x, box->rect.y, box->rect.w, box->rect.h, bg_color);
+    if (box->value)
+    {
+        char buf[15];
+        if (box->value->is_float)
+        {
+            snprintf(buf, sizeof(buf), "%.2f", box->value->value);
+        } else
+        {
+            snprintf(buf, sizeof(buf), "%d", (int) box->value->value);
+        }
+        _draw_text(box->rect.x + box->value->pos.x,
+                   box->rect.y + box->value->pos.y,
+                   box->value->align,
+                   buf, fg_color,
+                   box->value->font_size);
+    }
+
+    if (box->label)
+    {
+        _draw_text(box->rect.x + box->label->pos.x,
+                   box->rect.y + box->label->pos.y,
+                   box->label->aling,
+                   box->label->text,
+                   fg_color,
+                   box->label->font_size);
+    }
 }
 
 void init_graphics_api(struct GraphicsAPI *a)
@@ -54,7 +86,7 @@ void init_graphics_api(struct GraphicsAPI *a)
     api = a;
 }
 
-void render_interface(struct TextBox *text_boxes, uint16_t num)
+void render_interface(struct Box *text_boxes, uint16_t num)
 {
     api->clear_screen();
     for (int i = 0; i < num; i++)
@@ -83,11 +115,11 @@ uint8_t get_blue(uint32_t color)
     return color & 0xff;
 }
 
-struct TextBox *get_text_box(struct TextBox *text_boxes, uint16_t num, uint16_t id)
+struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id)
 {
     for (int i=0; i<num; i++) {
-        if ((text_boxes + i)->id == id) {
-            return (text_boxes + i);
+        if ((boxes + i)->id == id) {
+            return (boxes + i);
         }
     }
     return NULL;
@@ -110,4 +142,54 @@ uint32_t color_modify_rgb(uint32_t color, int8_t delta)
     }
 
     return (get_alpha(color) << 24) | (red << 16) | (green << 8) | blue;
+}
+
+struct Label *create_label(char *text, struct Coords pos, float font_size, enum FontAlign align)
+{
+    struct Label *label = malloc(sizeof(struct Label));
+    if (label)
+    {
+        label->text = text;
+        label->pos = pos;
+        label->font_size = font_size;
+        label->aling = align;
+    }
+    return label;
+}
+
+struct Value *create_value(float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, struct ColorRange *colors, uint8_t colors_num)
+{
+    struct Value *value = malloc(sizeof(struct Value));
+    if (value)
+    {
+        value->value = val;
+        value->is_float = is_float;
+        value->pos = pos;
+        value->font_size = font_size;
+        value->align = align;
+        value->colors = colors;
+        value->colors_num = colors_num;
+    }
+    return value;
+}
+
+void free_boxes(struct Box *boxes, uint16_t num)
+{
+    for (int i=0; i<num; i++)
+    {
+        struct Box *box = boxes + i;
+        if (box)
+        {
+            struct Label *label = box->label;
+            if (label)
+            {
+                free(label);
+            }
+            struct Value *value = box->value;
+            if (value)
+            {
+                free(value);
+            }
+        }
+    }
 }
