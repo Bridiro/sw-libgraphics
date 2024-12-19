@@ -85,8 +85,10 @@ int main()
     };
 
     struct Box boxes[] = {
-        { 0x1, { 5, 5, 393, 470 }, 0xff000000, 0xffffffff, create_label("XD", (struct Coords){330, 200}, 0.4, CENTER), create_value(51, false, (struct Coords){140, 170}, 0.6, CENTER, ranges, 3) },
-        { 0x2, { 403, 5, 392, 470 }, 0xff000000, 0xffffffff, create_label("SI", (struct Coords){196, 170}, 0.8, CENTER), NULL },
+        { 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, create_label("XD", (struct Coords){310, 95}, 0.4, CENTER), create_value(51, false, (struct Coords){140, 80}, 0.6, CENTER, ranges, 3) },
+        { 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, create_label("SI", (struct Coords){196, 80}, 0.7, CENTER), NULL },
+        { 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff, create_label("PROVA", (struct Coords){196, 80}, 0.5, CENTER), NULL },
+        { 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL, create_value(51.0, true, (struct Coords){ 196, 80 }, 0.6, CENTER, ranges, 3) },
     };
 
     // Ciclo principale
@@ -109,15 +111,17 @@ int main()
         SDL_RenderClear(sdl_ctx.renderer);
 
         // Renderizza i widget
-        render_interface(boxes, 2);
+        render_interface(boxes, 4);
 
         if (SDL_GetTicks() - last_time > 60)
         {
             struct Box *box = get_box(boxes, 2, 0x1);
+            struct Box *box2 = get_box(boxes, 4, 0x4);
             box->value->value += dir;
-            if (box->value->value > 200)
+            box2->value->value += dir;
+            if (box->value->value > 199)
                 dir = -1;
-            else if (box->value->value < 0)
+            else if (box->value->value < 2)
                 dir = 1;
         }
 
