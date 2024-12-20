@@ -115,7 +115,7 @@ int main()
 
         if (SDL_GetTicks() - last_time > 60)
         {
-            struct Box *box = get_box(boxes, 2, 0x1);
+            struct Box *box = get_box(boxes, 4, 0x1);
             struct Box *box2 = get_box(boxes, 4, 0x4);
             box->value->value += dir;
             box2->value->value += dir;
