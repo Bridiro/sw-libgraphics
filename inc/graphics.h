@@ -142,16 +142,105 @@ struct Box
     struct Value *value;
 };
 
+/**
+ * @brief Init graphics API
+ *
+ * @param a Pointer to graphics APIs
+ */
 void init_graphics_api(struct GraphicsAPI *a);
+
+/**
+ * @brief Renders the whole interface
+ *
+ * @param boxes Pointer to the defined interface
+ * @param num Number of Box in the interface
+ */
 void render_interface(struct Box *boxes, uint16_t num);
+
+/**
+ * @brief Utility to extract 8 bit alpha value from ARGB8888 format
+ *
+ * @param color Color value
+ * @return alpha value
+ */
 uint8_t get_alpha(uint32_t color);
+
+/**
+ * @brief Utility to extract 8 bit red value from ARGB8888 format
+ *
+ * @param color Color value
+ * @return red value
+ */
 uint8_t get_red(uint32_t color);
+
+/**
+ * @brief Utility to extract 8 bit green value from ARGB8888 format
+ *
+ * @param color Color value
+ * @return green value
+ */
 uint8_t get_green(uint32_t color);
+
+/**
+ * @brief Utility to extract 8 bit blue value from ARGB8888 format
+ *
+ * @param color Color value
+ * @return blue value
+ */
 uint8_t get_blue(uint32_t color);
+
+/**
+ * @brief Utility to get a Box based on id value
+ *
+ * @param boxes Pointer to the defined interface
+ * @param num Nunber of Box in the inteface
+ * @param id ID of the box to search for
+ * @return struct Box*
+ *     - Box pointer if found
+ *     - NULL if not found
+ */
 struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id);
+
+/**
+ * @brief Utility to increment or decrement RGB values in ARGB8888
+ *
+ * @param color Color value
+ * @param delta How much to increment or decrement
+ * @return modified ARGB8888 value
+ */
 uint32_t color_modify_rgb(uint32_t color, int8_t delta);
+
+/**
+ * @brief Utility to create struct Label (malloc inside)
+ *
+ * @param text Text in the label
+ * @param pos Position of the text
+ * @param font_size Text size
+ * @param align Alignment of font
+ * @return pointer to Label struct
+ */
 struct Label *create_label(char *text, struct Coords pos, float font_size, enum FontAlign align);
+
+/**
+ * @brief Utility to create struct Value (malloc inside)
+ *
+ * @param val Value
+ * @param is_float Says is the value is to cast to int
+ * @param pos Position of the value
+ * @param font_size Value size
+ * @param align ALignment of font
+ * @param colors Pointer to color ranges
+ * @param colors_num Number of color ranges
+ * @return pointer to Value struct
+ */
 struct Value *create_value(float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, struct ColorRange *colors, uint8_t colors_num);
+
+/**
+ * @brief Free all the boxes allocations
+ *
+ * @param boxes Pointer to the defined interface
+ * @param num Number of Box in the interface
+ */
 void free_boxes(struct Box *boxes, uint16_t num);
 
 #endif // GRAPHICS_H
