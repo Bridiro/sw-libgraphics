@@ -1,4 +1,3 @@
-# Nome dell'eseguibile
 TARGET = app
 FONTDIR = libs/McuFont/fonts
 MFDIR = libs/McuFont/decoder
@@ -6,9 +5,10 @@ include $(MFDIR)/mcufont.mk
 
 OS = $(shell uname -s)
 
-# Compilatore e flags
+# Flags and compiler
 CC = gcc
-CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -Os
+CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra
+DEBUG_CFLAGS = "-g"
 LDFLAGS = -lSDL2 -lm 
 
 ifeq ($(OS), Darwin) 
@@ -21,34 +21,36 @@ SRC_DIR = src
 INC_DIR = inc
 OBJ_DIR = build
 
-# File sorgenti e oggetti
+# Sources and objects
 SOURCES = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
 
-# Regola di default
+# Default build
 all: $(TARGET)
 
-# Creazione dell'eseguibile
+# Build with debug flags
+debug: CFLAGS += $(DEBUG_CFLAGS)
+debug: $(TARGET)
+
+# Executable build
 $(TARGET): $(OBJECTS)
 	@echo "Building for target: $(OS)"
 	$(CC) $(OBJECTS) -o $@ $(MFSRC) $(CFLAGS) $(LDFLAGS)
 
-# Compilazione dei file oggetto
+# Object file compilation
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-# Creazione della directory degli oggetti
+# Build dir creation
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-# Pulizia
 clean:
 	@echo "Cleaning up"
-	rm -rf $(OBJ_DIR) $(TARGET)
-
+	rm -rf $(OBJ_DIR) $(TARGET) app.dSYM
+	
 test: $(TARGET)
 	./$<
 
-# Regole ausiliarie
 .PHONY: all clean
 
