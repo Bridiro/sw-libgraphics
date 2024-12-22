@@ -8,7 +8,7 @@ OS = $(shell uname -s)
 
 # Compilatore e flags
 CC = gcc
-CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -g 
+CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra -Os
 LDFLAGS = -lSDL2 -lm 
 
 ifeq ($(OS), Darwin) 
@@ -46,7 +46,7 @@ clean:
 	@echo "Cleaning up"
 	rm -rf $(OBJ_DIR) $(TARGET)
 
-run: $(TARGET)
+test: $(TARGET)
 	./$<
 
 # Regole ausiliarie
