@@ -1,6 +1,8 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#define GRAPHICS_OPT 1
+
 #include <stdint.h>
 #include <mcufont.h>
 
@@ -134,6 +136,9 @@ struct Value
  */
 struct Box
 {
+#if GRAPHICS_OPT
+    bool updated;
+#endif
     uint16_t id;
     struct Rect rect;
     uint32_t default_bg_color;

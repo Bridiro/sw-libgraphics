@@ -37,6 +37,9 @@ void _draw_text(int16_t x, int16_t y, enum FontAlign align, char *text, uint32_t
 
 void _draw_text_box(struct Box *box)
 {
+#if GRAPHICS_OPT
+    if (!box->updated) return;
+#endif
     uint32_t bg_color = box->default_bg_color;
     uint32_t fg_color = box->default_fg_color;
 
@@ -88,7 +91,9 @@ void init_graphics_api(struct GraphicsAPI *a)
 
 void render_interface(struct Box *text_boxes, uint16_t num)
 {
+#if GRAPHICS_OPT == 0
     api->clear_screen();
+#endif
     for (int i = 0; i < num; i++)
     {
         _draw_text_box(text_boxes + i);
