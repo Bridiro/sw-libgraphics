@@ -77,7 +77,7 @@ void _draw_text_box(struct Box *box)
     {
         _draw_text(box->rect.x + box->label->pos.x,
                    box->rect.y + box->label->pos.y,
-                   box->label->aling,
+                   box->label->align,
                    box->label->text,
                    fg_color,
                    box->label->font_size);
@@ -157,7 +157,7 @@ struct Label *create_label(char *text, struct Coords pos, float font_size, enum 
         label->text = text;
         label->pos = pos;
         label->font_size = font_size;
-        label->aling = align;
+        label->align = align;
     }
     return label;
 }

@@ -97,7 +97,7 @@ struct Label
     char *text;
     struct Coords pos;
     float font_size;
-    enum FontAlign aling;
+    enum FontAlign align;
 };
 
 /**
