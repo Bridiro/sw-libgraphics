@@ -3,8 +3,9 @@
 
 #define GRAPHICS_OPT 1
 
+#include <stdbool.h>
 #include <stdint.h>
-#include <mcufont.h>
+#include "text.h"
 
 /**
  * @brief Rectangle definition for the UI
@@ -34,21 +35,6 @@ struct Coords
 {
     uint32_t x;
     uint32_t y;
-};
-
-/**
- * @brief Represents an abstraction over mf_align_t
- *
- * @details
- *     - LEFT means that the text rendering will start from Coords.x to the left
- *     - CENTER means that the text rendering will be centered to Coords.x
- *     - RIGHT means that the text rendering will end at Coords.x
- */
-enum FontAlign
-{
-    LEFT,
-    CENTER,
-    RIGHT
 };
 
 /**

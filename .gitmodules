@@ -1,0 +1,3 @@
+[submodule "libs/sw-lib-fonts"]
+	path = libs/sw-lib-fonts
+	url = git@github.com:Bridiro/sw-lib-font.git

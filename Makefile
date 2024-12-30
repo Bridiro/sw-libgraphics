@@ -1,13 +1,10 @@
 TARGET = app
-FONTDIR = libs/McuFont/fonts
-MFDIR = libs/McuFont/decoder
-include $(MFDIR)/mcufont.mk
 
 OS = $(shell uname -s)
 
 # Flags and compiler
 CC = gcc
-CFLAGS = -Iinc -I$(FONTDIR) -I$(MFDIR) -Wall -Wextra
+CFLAGS = -Iinc -Ilibs/sw-lib-fonts/inc -Wall -Wextra
 DEBUG_CFLAGS = "-g"
 LDFLAGS = -lSDL2 -lm 
 
@@ -17,13 +14,16 @@ ifeq ($(OS), Darwin)
 endif
 
 # Directory
-SRC_DIR = src
-INC_DIR = inc
-OBJ_DIR = build
+BUILD_DIR = build
 
 # Sources and objects
-SOURCES = $(wildcard $(SRC_DIR)/*.c)
-OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
+SOURCES = src/main.c src/graphics.c \
+		libs/sw-lib-fonts/src/font.c \
+		libs/sw-lib-fonts/src/text.c
+		
+OBJECTS = $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(SOURCES)))
+
+vpath %.c src libs/sw-lib-fonts/src
 
 # Default build
 all: $(TARGET)
@@ -35,19 +35,19 @@ debug: $(TARGET)
 # Executable build
 $(TARGET): $(OBJECTS)
 	@echo "Building for target: $(OS)"
-	$(CC) $(OBJECTS) -o $@ $(MFSRC) $(CFLAGS) $(LDFLAGS)
+	$(CC) $(OBJECTS) -o $@ $(CFLAGS) $(LDFLAGS)
 
 # Object file compilation
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 # Build dir creation
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
 clean:
 	@echo "Cleaning up"
-	rm -rf $(OBJ_DIR) $(TARGET) app.dSYM
+	rm -rf $(BUILD_DIR) $(TARGET) app.dSYM
 	
 test: $(TARGET)
 	./$<
