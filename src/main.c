@@ -6,7 +6,6 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 480
 
-// Struttura globale per il contesto SDL
 typedef struct
 {
     SDL_Window *window;
@@ -17,7 +16,6 @@ void sdl_clear_screen()
 {
 }
 
-// Funzione per disegnare un pixel utilizzando SDL
 void sdl_draw_pixel(int x, int y, uint32_t color)
 {
     SDL_SetRenderDrawColor(SDL_GetRenderer(SDL_GetWindowFromID(1)),
@@ -25,7 +23,6 @@ void sdl_draw_pixel(int x, int y, uint32_t color)
     SDL_RenderDrawPoint(SDL_GetRenderer(SDL_GetWindowFromID(1)), x, y);
 }
 
-// Funzione per disegnare un rettangolo utilizzando SDL
 void sdl_draw_rectangle(int x, int y, int w, int h, uint32_t color)
 {
     SDL_Rect rect = {x, y, w, h};
@@ -36,7 +33,6 @@ void sdl_draw_rectangle(int x, int y, int w, int h, uint32_t color)
 
 int main()
 {
-    // Inizializzazione di SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         SDL_Log("SDL_Init Error: %s", SDL_GetError());
@@ -70,14 +66,12 @@ int main()
         return 1;
     }
 
-    // Definizione delle API grafiche
     struct GraphicsAPI api = {
         .draw_pixel = sdl_draw_pixel,
         .draw_rectangle = sdl_draw_rectangle,
         .clear_screen = sdl_clear_screen};
     init_graphics_api(&api);
 
-    // Definizione dei widget
     struct ColorRange ranges[] = {
         {0.0f, 50.0f, 0x00FF00, 0x000000},
         {50.1f, 100.0f, 0xFFFF00, 0x000000},
@@ -91,7 +85,6 @@ int main()
         { 1, 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL, create_value(51.0, true, (struct Coords){ 196, 80 }, 0.6, CENTER, ranges, 3) },
     };
 
-    // Ciclo principale
     int running = 1;
     SDL_Event event;
     uint32_t last_time = SDL_GetTicks();
@@ -106,11 +99,9 @@ int main()
             }
         }
 
-        // Pulisci lo schermo
         SDL_SetRenderDrawColor(sdl_ctx.renderer, 255, 255, 255, 255);
         SDL_RenderClear(sdl_ctx.renderer);
 
-        // Renderizza i widget
         render_interface(boxes, 4);
 
         if (SDL_GetTicks() - last_time > 60)
@@ -125,14 +116,12 @@ int main()
                 dir = 1;
         }
 
-        // Mostra il risultato
         SDL_RenderPresent(sdl_ctx.renderer);
 
-        SDL_Delay(16); // Limitazione a ~60 FPS
+        SDL_Delay(16);
     }
 
     free_boxes(boxes, 2);
-    // Cleanup di SDL
     SDL_DestroyRenderer(sdl_ctx.renderer);
     SDL_DestroyWindow(sdl_ctx.window);
     SDL_Quit();
