@@ -22,14 +22,14 @@ This library provides a simple yet powerful way to create graphical widgets for 
 ## File Structure
 
 ```
-project/
+sw-lib-graphics/
 ├── src/
 │   ├── graphics.c       # Implementation of graphical rendering
 │   └── main.c           # Demo application to display capabilities
 ├── inc/
 │   └── graphics.h       # Header file for graphics functions
 ├── libs/
-│   └── mcufont/         # Font handling library
+│   └── sw-lib-font/     # Font handling library
 ├── build/               # Compiled object files
 └── app                  # Final compiled application
 ```
