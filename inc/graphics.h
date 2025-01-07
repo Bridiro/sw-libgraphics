@@ -1,3 +1,11 @@
+/**
+ * @file graphics.h
+ * @date 2024-12-13
+ * @author Alessandro Bridi [ale.bridi15@gmail.com]
+ *
+ * @brief Graphics handling functions
+ */
+
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
@@ -191,15 +199,6 @@ uint8_t get_blue(uint32_t color);
  *     - NULL if not found
  */
 struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id);
-
-/**
- * @brief Utility to increment or decrement RGB values in ARGB8888
- *
- * @param color Color value
- * @param delta How much to increment or decrement
- * @return modified ARGB8888 value
- */
-uint32_t color_modify_rgb(uint32_t color, int8_t delta);
 
 /**
  * @brief Utility to create struct Label (malloc inside)

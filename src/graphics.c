@@ -1,10 +1,20 @@
+/**
+ * @file graphics.c
+ * @date 2024-12-13
+ * @author Alessandro Bridi [ale.bridi15@gmail.com]
+ *
+ * @brief Graphics handling functions
+ */
+
 #include "graphics.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
+
 struct GraphicsAPI *api = NULL;
+
 
 void _draw_text_box(struct Box *box)
 {
@@ -14,6 +24,7 @@ void _draw_text_box(struct Box *box)
     uint32_t bg_color = box->default_bg_color;
     uint32_t fg_color = box->default_fg_color;
 
+    // In this block colors are selected based on thresholds selected for value (if any)
     if (box->value && box->value->colors)
     {
         for (int i=0; i<box->value->colors_num; i++)
@@ -26,9 +37,11 @@ void _draw_text_box(struct Box *box)
         }
     }
 
+    // Draw the basic rectangle
     api->draw_rectangle(box->rect.x, box->rect.y, box->rect.w, box->rect.h, bg_color);
     if (box->value)
     {
+        // Format the value accordingly to what we want
         char buf[15];
         if (box->value->is_float)
         {
@@ -37,6 +50,7 @@ void _draw_text_box(struct Box *box)
         {
             snprintf(buf, sizeof(buf), "%d", (int) box->value->value);
         }
+        // Plot the value
         draw_text(box->rect.x + box->value->pos.x,
                    box->rect.y + box->value->pos.y,
                    box->value->align,
@@ -46,6 +60,7 @@ void _draw_text_box(struct Box *box)
 
     if (box->label)
     {
+        // Plot the label
         draw_text(box->rect.x + box->label->pos.x,
                    box->rect.y + box->label->pos.y,
                    box->label->align,
@@ -55,14 +70,19 @@ void _draw_text_box(struct Box *box)
     }
 }
 
+
 void init_graphics_api(struct GraphicsAPI *a)
 {
+    // Sets local apis
     api = a;
+    // Sets font library api
     draw_pixel = api->draw_pixel;
 }
 
+
 void render_interface(struct Box *text_boxes, uint16_t num)
 {
+// Do not clear full screen for max optimization (less time spent)
 #if GRAPHICS_OPT == 0
     api->clear_screen();
 #endif
@@ -72,28 +92,34 @@ void render_interface(struct Box *text_boxes, uint16_t num)
     }
 }
 
+
 uint8_t get_alpha(uint32_t color)
 {
     return (color >> 24) & 0xff;
 }
+
 
 uint8_t get_red(uint32_t color)
 {
     return (color >> 16) & 0xff;
 }
 
+
 uint8_t get_green(uint32_t color)
 {
     return (color >> 8) & 0xff;
 }
+
 
 uint8_t get_blue(uint32_t color)
 {
     return color & 0xff;
 }
 
+
 struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id)
 {
+    // Loops and search for IDs (can be good for CAN IDs)
     for (int i=0; i<num; i++) {
         if ((boxes + i)->id == id) {
             return (boxes + i);
@@ -102,24 +128,6 @@ struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id)
     return NULL;
 }
 
-uint32_t color_modify_rgb(uint32_t color, int8_t delta)
-{
-    uint8_t red = get_red(color);
-    uint8_t green = get_green(color);
-    uint8_t blue = get_blue(color);
-
-    if (delta > 0) {
-        red   = (red + delta > 255) ? 255 : red + delta;
-        green = (green + delta > 255) ? 255 : green + delta;
-        blue  = (blue + delta > 255) ? 255 : blue + delta;        
-    } else {
-        red   = (red + delta < 0) ? 0 : red + delta;
-        green = (green + delta < 0) ? 0 : green + delta;
-        blue  = (blue + delta < 0) ? 0 : blue + delta;
-    }
-
-    return (get_alpha(color) << 24) | (red << 16) | (green << 8) | blue;
-}
 
 struct Label *create_label(char *text, struct Coords pos, float font_size, enum FontAlign align)
 {
@@ -133,6 +141,7 @@ struct Label *create_label(char *text, struct Coords pos, float font_size, enum 
     }
     return label;
 }
+
 
 struct Value *create_value(float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, struct ColorRange *colors, uint8_t colors_num)
 {
@@ -149,6 +158,7 @@ struct Value *create_value(float val, bool is_float, struct Coords pos, float fo
     }
     return value;
 }
+
 
 void free_boxes(struct Box *boxes, uint16_t num)
 {
