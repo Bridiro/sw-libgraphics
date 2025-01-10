@@ -17,13 +17,13 @@ endif
 BUILD_DIR = build
 
 # Sources and objects
-SOURCES = src/main.c src/graphics.c \
+SOURCES = test/main.c src/graphics.c \
 		libs/sw-lib-font/src/font.c \
 		libs/sw-lib-font/src/text.c
 		
 OBJECTS = $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(SOURCES)))
 
-vpath %.c src libs/sw-lib-font/src
+vpath %.c src test libs/sw-lib-font/src
 
 # Default build
 all: $(TARGET)
