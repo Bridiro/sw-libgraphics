@@ -9,7 +9,7 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#define GRAPHICS_OPT 1
+#define GRAPHICS_OPT 0
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -45,20 +45,32 @@ struct Coords
     uint32_t y;
 };
 
+#ifndef TEXT_H
 /**
- * @brief Defines 3 graphics functions for the library to work
- *
- * @details
- *     - draw_pixel is a pointer to a function that draws a pixel
- *     - draw_rectangle is a pointer to a function that draws a rectangle (may use DMA2D)
- *     - clear_screen is a pointer to a function that sets all pixel to black or white (user's choice)
+ * @brief Callback to draw a single pixel
+ * 
+ * @param x Position in pixel on x axis
+ * @param y Position in pixel on y axis
+ * @param color Color in ARGB format
  */
-struct GraphicsAPI
-{
-    void (*draw_pixel)(int x, int y, uint32_t color);
-    void (*draw_rectangle)(int x, int y, int w, int h, uint32_t color);
-    void (*clear_screen)();
-};
+ typedef void (*draw_pixel_callback_t)(int x, int y, uint32_t color);
+#endif
+
+ /**
+  * @brief Callback to draw a rectangle (may use DMA2D)
+  *
+  * @param x Position in piexel on x axis
+  * @param y Position in piexel on y axis
+  * @param w Width in pixel of rectangle
+  * @param h Height in pixel of rectangle
+  * @param color Color in ARGB format
+  */
+ typedef void (*draw_rectangle_callback_t)(int x, int y, int w, int h, uint32_t color);
+
+ /**
+  * @brief Function used to clear screen (user decides the color)
+  */
+ typedef void (*clear_screen_callback_t)(void);
 
 /**
  * @brief Defines a range for whom the color may be applied
@@ -142,19 +154,21 @@ struct Box
 };
 
 /**
- * @brief Init graphics API
- *
- * @param a Pointer to graphics APIs
- */
-void init_graphics_api(struct GraphicsAPI *a);
-
-/**
  * @brief Renders the whole interface
  *
  * @param boxes Pointer to the defined interface
  * @param num Number of Box in the interface
+ * @param draw_pixel Draw pixel callback
+ * @param draw_rectangle Draw rectangle callback
+ * @param clear_screen Clear screen callback
  */
-void render_interface(struct Box *boxes, uint16_t num);
+void render_interface(struct Box *boxes, uint16_t num,
+                      draw_pixel_callback_t draw_pixel,
+                      draw_rectangle_callback_t draw_rectangle
+#if GRAPHICS_OPT == 0
+                      ,clear_screen_callback_t clear_screen
+#endif
+                      );
 
 /**
  * @brief Utility to extract 8 bit alpha value from ARGB8888 format

@@ -7,16 +7,14 @@
  */
 
 #include "graphics.h"
+#include "text.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 
-struct GraphicsAPI *api = NULL;
-
-
-void _draw_text_box(struct Box *box)
+void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rectangle_callback_t draw_rectangle)
 {
 #if GRAPHICS_OPT
     if (!box->updated) return;
@@ -38,7 +36,7 @@ void _draw_text_box(struct Box *box)
     }
 
     // Draw the basic rectangle
-    api->draw_rectangle(box->rect.x, box->rect.y, box->rect.w, box->rect.h, bg_color);
+    draw_rectangle(box->rect.x, box->rect.y, box->rect.w, box->rect.h, bg_color);
     if (box->value)
     {
         // Format the value accordingly to what we want
@@ -55,7 +53,8 @@ void _draw_text_box(struct Box *box)
                    box->rect.y + box->value->pos.y,
                    box->value->align,
                    buf, fg_color,
-                   box->value->font_size);
+                   box->value->font_size,
+                   draw_pixel);
     }
 
     if (box->label)
@@ -66,29 +65,27 @@ void _draw_text_box(struct Box *box)
                    box->label->align,
                    box->label->text,
                    fg_color,
-                   box->label->font_size);
+                   box->label->font_size,
+                   draw_pixel);
     }
 }
 
 
-void init_graphics_api(struct GraphicsAPI *a)
-{
-    // Sets local apis
-    api = a;
-    // Sets font library api
-    draw_pixel = api->draw_pixel;
-}
-
-
-void render_interface(struct Box *text_boxes, uint16_t num)
+void render_interface(struct Box *text_boxes, uint16_t num,
+                      draw_pixel_callback_t draw_pixel,
+                      draw_rectangle_callback_t draw_rectangle
+#if GRAPHICS_OPT == 0
+                      ,clear_screen_callback_t clear_screen
+#endif
+                      )
 {
 // Do not clear full screen for max optimization (less time spent)
 #if GRAPHICS_OPT == 0
-    api->clear_screen();
+    clear_screen();
 #endif
     for (int i = 0; i < num; i++)
     {
-        _draw_text_box(text_boxes + i);
+        _draw_text_box(text_boxes + i, draw_pixel, draw_rectangle);
     }
 }
 

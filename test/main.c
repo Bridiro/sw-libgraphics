@@ -66,12 +66,6 @@ int main()
         return 1;
     }
 
-    struct GraphicsAPI api = {
-        .draw_pixel = sdl_draw_pixel,
-        .draw_rectangle = sdl_draw_rectangle,
-        .clear_screen = sdl_clear_screen};
-    init_graphics_api(&api);
-
     struct ColorRange ranges[] = {
         {0.0f, 50.0f, 0x00FF00, 0x000000},
         {50.1f, 100.0f, 0xFFFF00, 0x000000},
@@ -79,10 +73,10 @@ int main()
     };
 
     struct Box boxes[] = {
-        { 1, 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, create_label("XD", (struct Coords){310, 95}, 0.4, CENTER), create_value(51, false, (struct Coords){140, 80}, 0.7, CENTER, ranges, 3) },
-        { 1, 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, create_label("SI", (struct Coords){196, 80}, 0.7, CENTER), NULL },
-        { 1, 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff, create_label("PROVA", (struct Coords){196, 80}, 0.7, CENTER), NULL },
-        { 1, 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL, create_value(51.0, true, (struct Coords){ 196, 80 }, 0.7, CENTER, ranges, 3) },
+        { 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, create_label("XD", (struct Coords){310, 95}, 0.4, CENTER), create_value(51, false, (struct Coords){140, 80}, 0.7, CENTER, ranges, 3) },
+        { 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, create_label("SI", (struct Coords){196, 80}, 0.7, CENTER), NULL },
+        { 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff, create_label("PROVA", (struct Coords){196, 80}, 0.7, CENTER), NULL },
+        { 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL, create_value(51.0, true, (struct Coords){ 196, 80 }, 0.7, CENTER, ranges, 3) },
     };
 
     int running = 1;
@@ -102,7 +96,7 @@ int main()
         SDL_SetRenderDrawColor(sdl_ctx.renderer, 255, 255, 255, 255);
         SDL_RenderClear(sdl_ctx.renderer);
 
-        render_interface(boxes, 4);
+        render_interface(boxes, 4, sdl_draw_pixel, sdl_draw_rectangle, sdl_clear_screen);
 
         if (SDL_GetTicks() - last_time > 60)
         {
