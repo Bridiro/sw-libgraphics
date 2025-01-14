@@ -23,16 +23,19 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
     uint32_t fg_color = box->default_fg_color;
 
     // In this block colors are selected based on thresholds selected for value (if any)
-    if (box->value && box->value->colors)
+    if (box->value && box->value->color_type == RANGES && box->value->colors.colors)
     {
-        for (int i=0; i<box->value->colors_num; i++)
+        for (int i=0; i<box->value->colors.colors->colors_num; i++)
         {
-            if (box->value->colors[i].min < box->value->value && box->value->value < box->value->colors[i].max)
+            if (box->value->colors.colors[i].colors->min < box->value->value && box->value->value < box->value->colors.colors[i].colors->max)
             {
-                bg_color = box->value->colors[i].bg_color;
-                fg_color = box->value->colors[i].fg_color;
+                bg_color = box->value->colors.colors[i].colors->bg_color;
+                fg_color = box->value->colors.colors[i].colors->fg_color;
             }
         }
+    } else if (box->value && box->value->color_type == INTERPOLATION)
+    {
+        
     }
 
     // Draw the basic rectangle
@@ -140,7 +143,7 @@ struct Label *create_label(char *text, struct Coords pos, float font_size, enum 
 }
 
 
-struct Value *create_value(float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, struct ColorRange *colors, uint8_t colors_num)
+struct Value *create_value(float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, union Colors colors, enum ColorType color_type)
 {
     struct Value *value = malloc(sizeof(struct Value));
     if (value)
@@ -151,7 +154,7 @@ struct Value *create_value(float val, bool is_float, struct Coords pos, float fo
         value->font_size = font_size;
         value->align = align;
         value->colors = colors;
-        value->colors_num = colors_num;
+        value->color_type = color_type;
     }
     return value;
 }

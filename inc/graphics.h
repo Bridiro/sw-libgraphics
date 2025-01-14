@@ -73,6 +73,23 @@ struct Coords
  typedef void (*clear_screen_callback_t)(void);
 
 /**
+ * @brief Defines one component of the UI
+ *
+ * @details
+ *     - text is a pointer to the string to plot
+ *     - pos is the position where to plot the text
+ *     - font_size defines the size of the text
+ *     - align defines the alignement of the text
+ */
+struct Label
+{
+    char *text;
+    struct Coords pos;
+    float font_size;
+    enum FontAlign align;
+};
+
+/**
  * @brief Defines a range for whom the color may be applied
  *
  * @details
@@ -89,21 +106,26 @@ struct ColorRange
     uint32_t fg_color;  
 };
 
-/**
- * @brief Defines one component of the UI
- *
- * @details
- *     - text is a pointer to the string to plot
- *     - pos is the position where to plot the text
- *     - font_size defines the size of the text
- *     - align defines the alignement of the text
- */
-struct Label
-{
-    char *text;
-    struct Coords pos;
-    float font_size;
-    enum FontAlign align;
+struct Thresholds {
+    struct ColorRange *colors;
+    uint8_t colors_num;
+};
+
+struct LinearInterpolation {
+    uint32_t color_min;
+    uint32_t color_max;
+    float min;
+    float max;
+};
+
+enum ColorType {
+    RANGES,
+    INTERPOLATION,
+};
+
+union Colors {
+    struct Thresholds *colors;
+    struct LinearInterpolation interpolation;
 };
 
 /**
@@ -125,8 +147,8 @@ struct Value
     struct Coords pos;
     float font_size;
     enum FontAlign align;
-    struct ColorRange *colors;
-    uint8_t colors_num;
+    union Colors colors;
+    enum ColorType color_type;
 };
 
 /**
@@ -237,7 +259,7 @@ struct Label *create_label(char *text, struct Coords pos, float font_size, enum 
  * @param colors_num Number of color ranges
  * @return pointer to Value struct
  */
-struct Value *create_value(float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, struct ColorRange *colors, uint8_t colors_num);
+struct Value *create_value(float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, union Colors colors, enum ColorType color_type);
 
 /**
  * @brief Free all the boxes allocations
