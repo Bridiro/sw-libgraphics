@@ -27,10 +27,10 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
     {
         for (int i=0; i<box->value->colors.colors->colors_num; i++)
         {
-            if (box->value->colors.colors[i].colors->min < box->value->value && box->value->value < box->value->colors.colors[i].colors->max)
+            if (box->value->colors.colors->colors[i].min < box->value->value && box->value->value < box->value->colors.colors->colors[i].max)
             {
-                bg_color = box->value->colors.colors[i].colors->bg_color;
-                fg_color = box->value->colors.colors[i].colors->fg_color;
+                bg_color = box->value->colors.colors->colors[i].bg_color;
+                fg_color = box->value->colors.colors->colors[i].fg_color;
             }
         }
     } else if (box->value && box->value->color_type == INTERPOLATION)
