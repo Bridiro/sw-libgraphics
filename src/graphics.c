@@ -14,6 +14,31 @@
 #include <stdlib.h>
 
 
+uint32_t _interpolate_color(uint32_t color1, uint32_t color2, float min, float max, float actual_value) {
+    if (actual_value < min) actual_value = min;
+    if (actual_value > max) actual_value = max;
+
+    float t = (actual_value - min) / (max - min);
+
+    uint8_t a1 = (color1 >> 24) & 0xFF;
+    uint8_t r1 = (color1 >> 16) & 0xFF;
+    uint8_t g1 = (color1 >> 8) & 0xFF;
+    uint8_t b1 = color1 & 0xFF;
+
+    uint8_t a2 = (color2 >> 24) & 0xFF;
+    uint8_t r2 = (color2 >> 16) & 0xFF;
+    uint8_t g2 = (color2 >> 8) & 0xFF;
+    uint8_t b2 = color2 & 0xFF;
+
+    uint8_t a = (uint8_t)((1 - t) * a1 + t * a2);
+    uint8_t r = (uint8_t)((1 - t) * r1 + t * r2);
+    uint8_t g = (uint8_t)((1 - t) * g1 + t * g2);
+    uint8_t b = (uint8_t)((1 - t) * b1 + t * b2);
+
+    return (a << 24) | (r << 16) | (g << 8) | b;
+}
+
+
 void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rectangle_callback_t draw_rectangle)
 {
 #if GRAPHICS_OPT
@@ -23,7 +48,7 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
     uint32_t fg_color = box->default_fg_color;
 
     // In this block colors are selected based on thresholds selected for value (if any)
-    if (box->value && box->value->color_type == RANGES && box->value->colors.colors)
+    if (box->value && box->value->color_type == THRESHOLDS && box->value->colors.colors)
     {
         for (int i=0; i<box->value->colors.colors->colors_num; i++)
         {
@@ -35,7 +60,11 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
         }
     } else if (box->value && box->value->color_type == INTERPOLATION)
     {
-        
+        bg_color = _interpolate_color(box->value->colors.interpolation.color_min,
+                                      box->value->colors.interpolation.color_max,
+                                      box->value->colors.interpolation.min,
+                                      box->value->colors.interpolation.max,
+                                      box->value->value);
     }
 
     // Draw the basic rectangle

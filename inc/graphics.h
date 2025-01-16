@@ -119,7 +119,7 @@ struct LinearInterpolation {
 };
 
 enum ColorType {
-    RANGES,
+    THRESHOLDS,
     INTERPOLATION,
 };
 
