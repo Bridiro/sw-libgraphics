@@ -83,7 +83,7 @@ int main()
                     (union Colors){ .colors = thresholds}, THRESHOLDS) },
         { 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, NULL,
                     create_value(51, true, (struct Coords){ 196, 80 }, 0.7, CENTER,
-                    (union Colors){ .slider = (struct Slider){0xff000000, 0xff00ff00, ANCHOR_TOP, 0, 200, 0}}, SLIDER) },
+                    (union Colors){ .slider = (struct Slider){0xff000000, 0xff00ff00, ANCHOR_BOTTOM, 0, 200, 0}}, SLIDER) },
         { 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff,
                     create_label("PROVA", (struct Coords){196, 80}, 0.7, CENTER), NULL },
         { 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL,

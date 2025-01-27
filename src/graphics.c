@@ -84,7 +84,22 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
             } else if (box->value->colors.slider.anchor == ANCHOR_BOTTOM)
             {
                 uint32_t x = box->rect.x + box->value->colors.slider.margin;
-                uint32_t y = box->rect.h - box->value->colors.slider.margin - height + 2;
+                uint32_t y = box->rect.y + box->rect.h - box->value->colors.slider.margin - height;
+                draw_rectangle(x, y, width, height, box->value->colors.slider.slider_color);
+            }
+        } else if (box->value->colors.slider.anchor == ANCHOR_LEFT || box->value->colors.slider.anchor == ANCHOR_RIGHT)
+        {
+            uint32_t width = (box->rect.w - (box->value->colors.slider.margin * 2)) * percent;
+            uint32_t height = box->rect.h - (box->value->colors.slider.margin * 2);
+            if (box->value->colors.slider.anchor == ANCHOR_LEFT)
+            {
+                uint32_t x = box->rect.x + box->value->colors.slider.margin;
+                uint32_t y = box->rect.y + box->value->colors.slider.margin;
+                draw_rectangle(x, y, width, height, box->value->colors.slider.slider_color);
+            } else if (box->value->colors.slider.anchor == ANCHOR_RIGHT)
+            {
+                uint32_t x = box->rect.x + box->rect.w - box->value->colors.slider.margin - width;
+                uint32_t y = box->rect.y + box->value->colors.slider.margin;
                 draw_rectangle(x, y, width, height, box->value->colors.slider.slider_color);
             }
         }
