@@ -65,6 +65,9 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
                                       box->value->colors.interpolation.min,
                                       box->value->colors.interpolation.max,
                                       box->value->value);
+    } else if (box->value && box->value->color_type == SLIDER)
+    {
+        bg_color = box->value->colors.slider.bg_color;
     }
 
     // Draw the basic rectangle
