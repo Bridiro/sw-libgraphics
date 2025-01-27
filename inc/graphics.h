@@ -118,14 +118,32 @@ struct LinearInterpolation {
     float max;
 };
 
+enum AnchorSlider {
+    ANCHOR_TOP,
+    ANCHOR_BOTTOM,
+    ANCHOR_LEFT,
+    ANCHOR_RIGHT,
+};
+
+struct Slider {
+    uint32_t bg_color;
+    uint32_t slider_color;
+    enum AnchorSlider anchor;
+    float max;
+    float min;
+    uint32_t margin;
+};
+
 enum ColorType {
     THRESHOLDS,
     INTERPOLATION,
+    SLIDER,
 };
 
 union Colors {
     struct Thresholds *colors;
     struct LinearInterpolation interpolation;
+    struct Slider slider;
 };
 
 /**

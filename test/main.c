@@ -77,10 +77,18 @@ int main()
     };
 
     struct Box boxes[] = {
-        { 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, create_label("XD", (struct Coords){310, 95}, 0.4, CENTER), create_value(51, false, (struct Coords){140, 80}, 0.7, CENTER, (union Colors){ .colors = thresholds}, THRESHOLDS) },
-        { 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, create_label("SI", (struct Coords){196, 80}, 0.7, CENTER), NULL },
-        { 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff, create_label("PROVA", (struct Coords){196, 80}, 0.7, CENTER), NULL },
-        { 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL, create_value(51.0, true, (struct Coords){ 196, 80 }, 0.7, CENTER, (union Colors){ .interpolation = (struct LinearInterpolation){0xff000000, 0xff00ff00, 0.0, 200.0}}, INTERPOLATION) },
+        { 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, 
+                    create_label("XD", (struct Coords){310, 95}, 0.4, CENTER),
+                    create_value(51, false, (struct Coords){140, 80}, 0.7, CENTER,
+                    (union Colors){ .colors = thresholds}, THRESHOLDS) },
+        { 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, NULL,
+                    create_value(51, true, (struct Coords){ 196, 80 }, 0.7, CENTER,
+                    (union Colors){ .slider = (struct Slider){0xff000000, 0xff00ff00, ANCHOR_TOP, 0, 200, 0}}, SLIDER) },
+        { 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff,
+                    create_label("PROVA", (struct Coords){196, 80}, 0.7, CENTER), NULL },
+        { 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL,
+                    create_value(51.0, true, (struct Coords){ 196, 80 }, 0.7, CENTER,
+                    (union Colors){ .interpolation = (struct LinearInterpolation){0xff000000, 0xff00ff00, 0.0, 200.0}}, INTERPOLATION) },
     };
 
     int running = 1;
@@ -106,8 +114,10 @@ int main()
         {
             struct Box *box = get_box(boxes, 4, 0x1);
             struct Box *box2 = get_box(boxes, 4, 0x4);
+            struct Box *box3 = get_box(boxes, 4, 0x2);
             box->value->value += dir;
             box2->value->value += dir;
+            box3->value->value += dir;
             if (box->value->value > 199)
                 dir = -1;
             else if (box->value->value < 2)
