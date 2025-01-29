@@ -76,19 +76,25 @@ int main()
         {ranges, 3}
     };
 
+    struct Label l1;
+    create_label(&l1, "XD", (struct Coords){310, 95}, 0.4, CENTER);
+    struct Value v1;
+    create_value(&v1, 51, false, (struct Coords){140, 80}, 0.7, CENTER, (union Colors){ .colors = thresholds}, THRESHOLDS);
+
+    struct Value v2;
+    create_value(&v2, 51, true, (struct Coords){ 196, 80 }, 0.7, CENTER, (union Colors){ .slider = (struct Slider){0xff000000, 0xff00ff00, ANCHOR_BOTTOM, 0, 200, 3}}, SLIDER);
+
+    struct Label l2;
+    create_label(&l2, "PROVA", (struct Coords){196, 80}, 0.7, CENTER);
+
+    struct Value v3;
+    create_value(&v3, 51.0, true, (struct Coords){ 196, 80 }, 0.7, CENTER, (union Colors){ .interpolation = (struct LinearInterpolation){0xff000000, 0xff00ff00, 0.0, 200.0}}, INTERPOLATION);
+
     struct Box boxes[] = {
-        { 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, 
-                    create_label("XD", (struct Coords){310, 95}, 0.4, CENTER),
-                    create_value(51, false, (struct Coords){140, 80}, 0.7, CENTER,
-                    (union Colors){ .colors = thresholds}, THRESHOLDS) },
-        { 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, NULL,
-                    create_value(51, true, (struct Coords){ 196, 80 }, 0.7, CENTER,
-                    (union Colors){ .slider = (struct Slider){0xff000000, 0xff00ff00, ANCHOR_BOTTOM, 0, 200, 3}}, SLIDER) },
-        { 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff,
-                    create_label("PROVA", (struct Coords){196, 80}, 0.7, CENTER), NULL },
-        { 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL,
-                    create_value(51.0, true, (struct Coords){ 196, 80 }, 0.7, CENTER,
-                    (union Colors){ .interpolation = (struct LinearInterpolation){0xff000000, 0xff00ff00, 0.0, 200.0}}, INTERPOLATION) },
+        { 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, &l1, &v1 },
+        { 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, NULL, &v2 },
+        { 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff, &l2, NULL },
+        { 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL, &v3 }
     };
 
     int running = 1;
@@ -129,7 +135,6 @@ int main()
         SDL_Delay(16);
     }
 
-    free_boxes(boxes, 2);
     SDL_DestroyRenderer(sdl_ctx.renderer);
     SDL_DestroyWindow(sdl_ctx.window);
     SDL_Quit();

@@ -255,19 +255,20 @@ uint8_t get_blue(uint32_t color);
 struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id);
 
 /**
- * @brief Utility to create struct Label (malloc inside)
+ * @brief Utility to populate struct Label
  *
+ * @param label The label struct to populate
  * @param text Text in the label
  * @param pos Position of the text
  * @param font_size Text size
  * @param align Alignment of font
- * @return pointer to Label struct
  */
-struct Label *create_label(char *text, struct Coords pos, float font_size, enum FontAlign align);
+void create_label(struct Label *label, char *text, struct Coords pos, float font_size, enum FontAlign align);
 
 /**
- * @brief Utility to create struct Value (malloc inside)
+ * @brief Utility to populate struct Value
  *
+ * @param value The value struct to populate
  * @param val Value
  * @param is_float Says is the value is to cast to int
  * @param pos Position of the value
@@ -275,16 +276,8 @@ struct Label *create_label(char *text, struct Coords pos, float font_size, enum 
  * @param align ALignment of font
  * @param colors Pointer to color ranges
  * @param colors_num Number of color ranges
- * @return pointer to Value struct
  */
-struct Value *create_value(float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, union Colors colors, enum ColorType color_type);
+ void create_value(struct Value *value, float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, union Colors colors, enum ColorType color_type);
 
-/**
- * @brief Free all the boxes allocations
- *
- * @param boxes Pointer to the defined interface
- * @param num Number of Box in the interface
- */
-void free_boxes(struct Box *boxes, uint16_t num);
 
 #endif // GRAPHICS_H

@@ -196,9 +196,8 @@ struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id)
 }
 
 
-struct Label *create_label(char *text, struct Coords pos, float font_size, enum FontAlign align)
+void create_label(struct Label *label, char *text, struct Coords pos, float font_size, enum FontAlign align)
 {
-    struct Label *label = malloc(sizeof(struct Label));
     if (label)
     {
         label->text = text;
@@ -206,13 +205,11 @@ struct Label *create_label(char *text, struct Coords pos, float font_size, enum 
         label->font_size = font_size;
         label->align = align;
     }
-    return label;
 }
 
 
-struct Value *create_value(float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, union Colors colors, enum ColorType color_type)
+void create_value(struct Value *value, float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, union Colors colors, enum ColorType color_type)
 {
-    struct Value *value = malloc(sizeof(struct Value));
     if (value)
     {
         value->value = val;
@@ -222,28 +219,5 @@ struct Value *create_value(float val, bool is_float, struct Coords pos, float fo
         value->align = align;
         value->colors = colors;
         value->color_type = color_type;
-    }
-    return value;
-}
-
-
-void free_boxes(struct Box *boxes, uint16_t num)
-{
-    for (int i=0; i<num; i++)
-    {
-        struct Box *box = boxes + i;
-        if (box)
-        {
-            struct Label *label = box->label;
-            if (label)
-            {
-                free(label);
-            }
-            struct Value *value = box->value;
-            if (value)
-            {
-                free(value);
-            }
-        }
     }
 }
