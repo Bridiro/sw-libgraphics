@@ -9,7 +9,7 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#define GRAPHICS_OPT 0
+#define GRAPHICS_OPT 1
 
 #include <stdbool.h>
 #include <stdint.h>
