@@ -16,25 +16,21 @@ void sdl_clear_screen()
 {
 }
 
-void sdl_draw_pixel(int x, int y, uint32_t color)
-{
+void sdl_draw_pixel(int x, int y, uint32_t color) {
     SDL_SetRenderDrawColor(SDL_GetRenderer(SDL_GetWindowFromID(1)),
                            get_red(color), get_green(color), get_blue(color), get_alpha(color));
     SDL_RenderDrawPoint(SDL_GetRenderer(SDL_GetWindowFromID(1)), x, y);
 }
 
-void sdl_draw_rectangle(int x, int y, int w, int h, uint32_t color)
-{
+void sdl_draw_rectangle(int x, int y, int w, int h, uint32_t color) {
     SDL_Rect rect = {x, y, w, h};
     SDL_SetRenderDrawColor(SDL_GetRenderer(SDL_GetWindowFromID(1)),
                            get_red(color), get_green(color), get_blue(color), get_alpha(color));
     SDL_RenderFillRect(SDL_GetRenderer(SDL_GetWindowFromID(1)), &rect);
 }
 
-int main()
-{
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    {
+int main() {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         SDL_Log("SDL_Init Error: %s", SDL_GetError());
         return 1;
     }
@@ -48,8 +44,7 @@ int main()
                                    SDL_WINDOW_SHOWN),
         .renderer = NULL};
 
-    if (!sdl_ctx.window)
-    {
+    if (!sdl_ctx.window) {
         SDL_Log("SDL_CreateWindow Error: %s", SDL_GetError());
         SDL_Quit();
         return 1;
@@ -58,8 +53,7 @@ int main()
     sdl_ctx.renderer = SDL_CreateRenderer(sdl_ctx.window, -1, SDL_RENDERER_ACCELERATED);
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
 
-    if (!sdl_ctx.renderer)
-    {
+    if (!sdl_ctx.renderer) {
         SDL_Log("SDL_CreateRenderer Error: %s", SDL_GetError());
         SDL_DestroyWindow(sdl_ctx.window);
         SDL_Quit();
@@ -101,12 +95,9 @@ int main()
     SDL_Event event;
     uint32_t last_time = SDL_GetTicks();
     int dir = 1;
-    while (running)
-    {
-        while (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_QUIT)
-            {
+    while (running) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
                 running = 0;
             }
         }
@@ -116,8 +107,7 @@ int main()
 
         render_interface(boxes, 4, sdl_draw_pixel, sdl_draw_rectangle);
 
-        if (SDL_GetTicks() - last_time > 60)
-        {
+        if (SDL_GetTicks() - last_time > 60) {
             struct Box *box = get_box(boxes, 4, 0x1);
             struct Box *box2 = get_box(boxes, 4, 0x4);
             struct Box *box3 = get_box(boxes, 4, 0x2);

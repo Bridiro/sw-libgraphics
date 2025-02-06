@@ -91,15 +91,12 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
         _calculate_slider_position(box, &x, &y, &width, &height);
         draw_rectangle(x, y, width, height, box->value->colors.slider.color);
     }
-    if (box->value)
-    {
+    if (box->value) {
         // Format the value accordingly to what we want
         char buf[15];
-        if (box->value->is_float)
-        {
+        if (box->value->is_float) {
             snprintf(buf, sizeof(buf), "%.2f", box->value->value);
-        } else
-        {
+        } else {
             snprintf(buf, sizeof(buf), "%d", (int) box->value->value);
         }
         // Plot the value
@@ -111,8 +108,7 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
                    draw_pixel);
     }
 
-    if (box->label)
-    {
+    if (box->label) {
         // Plot the label
         draw_text(box->rect.x + box->label->pos.x,
                    box->rect.y + box->label->pos.y,
@@ -137,39 +133,33 @@ void render_interface(struct Box *text_boxes, uint16_t num,
 #if GRAPHICS_OPT == 0
     clear_screen();
 #endif
-    for (int i = 0; i < num; i++)
-    {
+    for (int i = 0; i < num; i++) {
         _draw_text_box(text_boxes + i, draw_pixel, draw_rectangle);
     }
 }
 
 
-uint8_t get_alpha(uint32_t color)
-{
+uint8_t get_alpha(uint32_t color) {
     return (color >> 24) & 0xff;
 }
 
 
-uint8_t get_red(uint32_t color)
-{
+uint8_t get_red(uint32_t color) {
     return (color >> 16) & 0xff;
 }
 
 
-uint8_t get_green(uint32_t color)
-{
+uint8_t get_green(uint32_t color) {
     return (color >> 8) & 0xff;
 }
 
 
-uint8_t get_blue(uint32_t color)
-{
+uint8_t get_blue(uint32_t color) {
     return color & 0xff;
 }
 
 
-struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id)
-{
+struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id) {
     // Loops and search for IDs (can be good for CAN IDs)
     for (int i=0; i<num; i++) {
         if ((boxes + i)->id == id) {
@@ -180,10 +170,8 @@ struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id)
 }
 
 
-void create_label(struct Label *label, char *text, struct Coords pos, float font_size, enum FontAlign align)
-{
-    if (label)
-    {
+void create_label(struct Label *label, char *text, struct Coords pos, float font_size, enum FontAlign align) {
+    if (label) {
         label->text = text;
         label->pos = pos;
         label->font_size = font_size;
@@ -192,10 +180,8 @@ void create_label(struct Label *label, char *text, struct Coords pos, float font
 }
 
 
-void create_value(struct Value *value, float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, union Colors colors, enum ColorType color_type)
-{
-    if (value)
-    {
+void create_value(struct Value *value, float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, union Colors colors, enum ColorType color_type) {
+    if (value) {
         value->value = val;
         value->is_float = is_float;
         value->pos = pos;

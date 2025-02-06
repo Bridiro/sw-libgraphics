@@ -24,8 +24,7 @@
  *     - w Is the width in pixel
  *     - h Is the height in pixel
  */
-struct Rect
-{
+struct Rect {
     uint32_t x;
     uint32_t y;
     uint32_t w;
@@ -39,8 +38,7 @@ struct Rect
  *     - x Is the position in pixel on the x axis
  *     - y Is the position in pixel on the y axis
  */
-struct Coords
-{
+struct Coords {
     uint32_t x;
     uint32_t y;
 };
@@ -81,8 +79,7 @@ struct Coords
  *     - font_size Defines the size of the text
  *     - align Defines the alignement of the text
  */
-struct Label
-{
+struct Label {
     char *text;
     struct Coords pos;
     float font_size;
@@ -98,8 +95,7 @@ struct Label
  *     - bg_color Is the background color to apply
  *     - fg_color Is the foreground color to apply
  */
-struct Threshold
-{
+struct Threshold {
     float min;
     float max;
     uint32_t bg_color;
@@ -195,8 +191,7 @@ union Colors {
  *     - colors Contains one possible coloring method
  *     - color_type Describes which coloring method to use with the box based on the value
  */
-struct Value
-{
+struct Value {
     float value;
     bool is_float;
     struct Coords pos;
@@ -218,8 +213,7 @@ struct Value
  *     - label Is a pointer to Label component
  *     - value Is a pointer to Value component
  */
-struct Box
-{
+struct Box {
 #if GRAPHICS_OPT
     bool updated;
 #endif
