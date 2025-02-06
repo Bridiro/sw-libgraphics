@@ -66,7 +66,7 @@ int main()
         return 1;
     }
 
-    struct ColorRange ranges[] = {
+    struct Threshold ranges[] = {
         {0.0f, 50.0f, 0x00FF00, 0x000000},
         {50.1f, 100.0f, 0xFFFF00, 0x000000},
         {100.1f, 200.0f, 0xFF0000, 0xFFFFFF}
@@ -79,10 +79,10 @@ int main()
     struct Label l1;
     create_label(&l1, "XD", (struct Coords){310, 95}, 0.4, CENTER);
     struct Value v1;
-    create_value(&v1, 51, false, (struct Coords){140, 80}, 0.7, CENTER, (union Colors){ .colors = thresholds}, THRESHOLDS);
+    create_value(&v1, 51, false, (struct Coords){140, 80}, 0.7, CENTER, (union Colors){ .thresholds = thresholds}, THRESHOLDS);
 
     struct Value v2;
-    create_value(&v2, 51, true, (struct Coords){ 196, 80 }, 0.7, CENTER, (union Colors){ .slider = (struct Slider){0xff000000, 0xff00ff00, ANCHOR_BOTTOM, 0, 200, 3}}, SLIDER);
+    create_value(&v2, 51, true, (struct Coords){ 196, 80 }, 0.7, CENTER, (union Colors){ .slider = (struct Slider){0xff00ff00, ANCHOR_BOTTOM, 0, 200, 3}}, SLIDER);
 
     struct Label l2;
     create_label(&l2, "PROVA", (struct Coords){196, 80}, 0.7, CENTER);
@@ -91,10 +91,10 @@ int main()
     create_value(&v3, 51.0, true, (struct Coords){ 196, 80 }, 0.7, CENTER, (union Colors){ .interpolation = (struct LinearInterpolation){0xff000000, 0xff00ff00, 0.0, 200.0}}, INTERPOLATION);
 
     struct Box boxes[] = {
-        { 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, &l1, &v1 },
-        { 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, NULL, &v2 },
-        { 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff, &l2, NULL },
-        { 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL, &v3 }
+        { 1, 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, &l1, &v1 },
+        { 1, 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, NULL, &v2 },
+        { 1, 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff, &l2, NULL },
+        { 1, 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL, &v3 }
     };
 
     int running = 1;
@@ -114,7 +114,7 @@ int main()
         SDL_SetRenderDrawColor(sdl_ctx.renderer, 255, 255, 255, 255);
         SDL_RenderClear(sdl_ctx.renderer);
 
-        render_interface(boxes, 4, sdl_draw_pixel, sdl_draw_rectangle, sdl_clear_screen);
+        render_interface(boxes, 4, sdl_draw_pixel, sdl_draw_rectangle);
 
         if (SDL_GetTicks() - last_time > 60)
         {

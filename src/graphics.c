@@ -39,8 +39,34 @@ uint32_t _interpolate_color(uint32_t color1, uint32_t color2, float min, float m
 }
 
 
-void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rectangle_callback_t draw_rectangle)
-{
+void _extract_threshold(struct Box *box, uint32_t *bg_color, uint32_t *fg_color) {
+    for (int i=0; i<box->value->colors.thresholds->thresholds_num; i++) {
+        if (box->value->colors.thresholds->threshold[i].min < box->value->value && box->value->value < box->value->colors.thresholds->threshold[i].max) {
+            *bg_color = box->value->colors.thresholds->threshold[i].bg_color;
+            *fg_color = box->value->colors.thresholds->threshold[i].fg_color;
+        }
+    }
+}
+
+
+void _calculate_slider_position(struct Box *box, uint32_t *x, uint32_t *y, uint32_t *width, uint32_t *height) {
+    float percent = 1.f - ((box->value->value - box->value->colors.slider.min) /
+                           (box->value->colors.slider.max - box->value->colors.slider.min));
+    if (box->value->colors.slider.anchor == ANCHOR_TOP || box->value->colors.slider.anchor == ANCHOR_BOTTOM) {
+        *width = box->rect.w - 2 * box->value->colors.slider.margin;
+        *height = (box->rect.h - 2 * box->value->colors.slider.margin) * percent;
+        *x = box->rect.x + box->value->colors.slider.margin;
+        *y = box->rect.y + (box->value->colors.slider.anchor == ANCHOR_TOP ? box->value->colors.slider.margin : box->rect.h - box->value->colors.slider.margin - *height);
+    } else if (box->value->colors.slider.anchor == ANCHOR_LEFT || box->value->colors.slider.anchor == ANCHOR_RIGHT) {
+        *width = (box->rect.w - 2 * box->value->colors.slider.margin) * percent;
+        *height = box->rect.h - 2 * box->value->colors.slider.margin;
+        *x = box->rect.x + (box->value->colors.slider.anchor == ANCHOR_LEFT ? box->value->colors.slider.margin : box->rect.w - box->value->colors.slider.margin - *width);
+        *y = box->rect.y + box->value->colors.slider.margin;
+    }
+}
+
+
+void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rectangle_callback_t draw_rectangle) {
 #if GRAPHICS_OPT
     if (!box->updated) return;
 #endif
@@ -48,64 +74,22 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
     uint32_t fg_color = box->default_fg_color;
 
     // In this block colors are selected based on thresholds selected for value (if any)
-    if (box->value && box->value->color_type == THRESHOLDS && box->value->colors.colors)
-    {
-        for (int i=0; i<box->value->colors.colors->colors_num; i++)
-        {
-            if (box->value->colors.colors->colors[i].min < box->value->value && box->value->value < box->value->colors.colors->colors[i].max)
-            {
-                bg_color = box->value->colors.colors->colors[i].bg_color;
-                fg_color = box->value->colors.colors->colors[i].fg_color;
-            }
-        }
-    } else if (box->value && box->value->color_type == INTERPOLATION)
-    {
+    if (box->value && box->value->color_type == THRESHOLDS && box->value->colors.thresholds) {
+        _extract_threshold(box, &bg_color, &fg_color);
+    } else if (box->value && box->value->color_type == INTERPOLATION) {
         bg_color = _interpolate_color(box->value->colors.interpolation.color_min,
                                       box->value->colors.interpolation.color_max,
                                       box->value->colors.interpolation.min,
                                       box->value->colors.interpolation.max,
                                       box->value->value);
-    } else if (box->value && box->value->color_type == SLIDER)
-    {
-        bg_color = box->value->colors.slider.bg_color;
     }
 
     // Draw the basic rectangle
     draw_rectangle(box->rect.x, box->rect.y, box->rect.w, box->rect.h, bg_color);
-    if (box->value && box->value->color_type == SLIDER)
-    {
-        float percent = 1.f - ((box->value->value - box->value->colors.slider.min) / (box->value->colors.slider.max - box->value->colors.slider.min));
-        if (box->value->colors.slider.anchor == ANCHOR_TOP || box->value->colors.slider.anchor == ANCHOR_BOTTOM)
-        {
-            uint32_t width = box->rect.w - (box->value->colors.slider.margin * 2);
-            uint32_t height = (box->rect.h - (box->value->colors.slider.margin * 2)) * percent;
-            if (box->value->colors.slider.anchor == ANCHOR_TOP)
-            {
-                uint32_t x = box->rect.x + box->value->colors.slider.margin;
-                uint32_t y = box->rect.y + box->value->colors.slider.margin;
-                draw_rectangle(x, y, width, height, box->value->colors.slider.slider_color);
-            } else if (box->value->colors.slider.anchor == ANCHOR_BOTTOM)
-            {
-                uint32_t x = box->rect.x + box->value->colors.slider.margin;
-                uint32_t y = box->rect.y + box->rect.h - box->value->colors.slider.margin - height;
-                draw_rectangle(x, y, width, height, box->value->colors.slider.slider_color);
-            }
-        } else if (box->value->colors.slider.anchor == ANCHOR_LEFT || box->value->colors.slider.anchor == ANCHOR_RIGHT)
-        {
-            uint32_t width = (box->rect.w - (box->value->colors.slider.margin * 2)) * percent;
-            uint32_t height = box->rect.h - (box->value->colors.slider.margin * 2);
-            if (box->value->colors.slider.anchor == ANCHOR_LEFT)
-            {
-                uint32_t x = box->rect.x + box->value->colors.slider.margin;
-                uint32_t y = box->rect.y + box->value->colors.slider.margin;
-                draw_rectangle(x, y, width, height, box->value->colors.slider.slider_color);
-            } else if (box->value->colors.slider.anchor == ANCHOR_RIGHT)
-            {
-                uint32_t x = box->rect.x + box->rect.w - box->value->colors.slider.margin - width;
-                uint32_t y = box->rect.y + box->value->colors.slider.margin;
-                draw_rectangle(x, y, width, height, box->value->colors.slider.slider_color);
-            }
-        }
+    if (box->value && box->value->color_type == SLIDER) {
+        uint32_t x, y, width, height;
+        _calculate_slider_position(box, &x, &y, &width, &height);
+        draw_rectangle(x, y, width, height, box->value->colors.slider.color);
     }
     if (box->value)
     {

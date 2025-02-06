@@ -19,10 +19,10 @@
  * @brief Rectangle definition for the UI
  *
  * @details 
- *     - x is the position in pixel on the x axis
- *     - y is the position in pixel on the y axis
- *     - w is the width in pixel
- *     - h is the height in pixel
+ *     - x Is the position in pixel on the x axis
+ *     - y Is the position in pixel on the y axis
+ *     - w Is the width in pixel
+ *     - h Is the height in pixel
  */
 struct Rect
 {
@@ -36,8 +36,8 @@ struct Rect
  * @brief Represents a set of coordinates
  *
  * @details
- *     - x is the position in pixel on the x axis
- *     - y is the position in pixel on the y axis
+ *     - x Is the position in pixel on the x axis
+ *     - y Is the position in pixel on the y axis
  */
 struct Coords
 {
@@ -76,10 +76,10 @@ struct Coords
  * @brief Defines one component of the UI
  *
  * @details
- *     - text is a pointer to the string to plot
- *     - pos is the position where to plot the text
- *     - font_size defines the size of the text
- *     - align defines the alignement of the text
+ *     - text Is a pointer to the string to plot
+ *     - pos Is the position where to plot the text
+ *     - font_size Defines the size of the text
+ *     - align Defines the alignement of the text
  */
 struct Label
 {
@@ -93,12 +93,12 @@ struct Label
  * @brief Defines a range for whom the color may be applied
  *
  * @details
- *     - min is the min value for whom the color is applied
- *     - max is the max value for whom the color is applied
- *     - bg_color is the background color to apply
- *     - fg_color is the foreground color to apply
+ *     - min Is the min value for whom the color is applied
+ *     - max Is the max value for whom the color is applied
+ *     - bg_color Is the background color to apply
+ *     - fg_color Is the foreground color to apply
  */
-struct ColorRange
+struct Threshold
 {
     float min;
     float max;
@@ -106,11 +106,27 @@ struct ColorRange
     uint32_t fg_color;  
 };
 
+/**
+ * @brief Includes all the thresholds in one struct
+ *
+ * @details
+ *     - threshold Pointer to Threshold struct
+ *     - thresholds_num Number of thresholds in the array
+ */
 struct Thresholds {
-    struct ColorRange *colors;
-    uint8_t colors_num;
+    struct Threshold *threshold;
+    uint8_t thresholds_num;
 };
 
+/**
+ * @brief Defines an interpolation between 2 colors based on 2 values
+ *
+ * @details
+ *     - color_min The color applied if the value is lower or equal to min
+ *     - color_max The color applied if the value is higher ot equal to max
+ *     - min The minimum value
+ *     - max The maximum value
+ */
 struct LinearInterpolation {
     uint32_t color_min;
     uint32_t color_max;
@@ -118,6 +134,12 @@ struct LinearInterpolation {
     float max;
 };
 
+/**
+ * @brief Defines how the slider should behave (where to attach in the box)
+ *
+ * @details
+ *     - ANCHOR_<self descriptive> Attaches in the direction described in the name
+ */
 enum AnchorSlider {
     ANCHOR_TOP,
     ANCHOR_BOTTOM,
@@ -125,23 +147,38 @@ enum AnchorSlider {
     ANCHOR_RIGHT,
 };
 
+/**
+ * @brief Describes all the useful parameters of the slider
+ *
+ * @details
+ *     - color The color of the slider (background used is the default one)
+ *     - anchor Defines on which side of the box to attach the slider
+ *     - max Max value of the slider
+ *     - min Min value of the slider
+ *     - margin Space to leave in between the box borders and the slider
+ */
 struct Slider {
-    uint32_t bg_color;
-    uint32_t slider_color;
+    uint32_t color;
     enum AnchorSlider anchor;
     float max;
     float min;
     uint32_t margin;
 };
 
+/**
+ * @brief Defines which type of box is this
+ */
 enum ColorType {
     THRESHOLDS,
     INTERPOLATION,
     SLIDER,
 };
 
+/**
+ * @brief Contains the struct that defines one coloring method. ColorType should match the one placed in here.
+ */
 union Colors {
-    struct Thresholds *colors;
+    struct Thresholds *thresholds;
     struct LinearInterpolation interpolation;
     struct Slider slider;
 };
@@ -150,13 +187,13 @@ union Colors {
  * @brief Defines one component of the UI
  *
  * @details
- *     - value is the value to display
- *     - is_float tells if the value is to be casted
- *     - pos is the position there to plot the value
- *     - font_size defines the size of the text
- *     - align defines the alignement of the text
- *     - colors contains all the color ranges
- *     - color_nums contains the number of ranges
+ *     - value Is the value to display
+ *     - is_float Tells if the value is to be casted
+ *     - pos Is the position there to plot the value
+ *     - font_size Defines the size of the text
+ *     - align Defines the alignement of the text
+ *     - colors Contains one possible coloring method
+ *     - color_type Describes which coloring method to use with the box based on the value
  */
 struct Value
 {
@@ -173,12 +210,13 @@ struct Value
  * @brief Defines a composed component of the UI
  *
  * @details
- *     - id is used to identify the component (can be used with CAN ids)
- *     - rect is to define the boundings of the Box
- *     - default_bg_color is used if no ranges are present or in range
- *     - default_fg_color is used if no ranges are present or in range
- *     - label is a pointer to Label component
- *     - value is a pointer to Value component
+ *     - updated Is used to optimize the interface drawing (usable only is GRAPHICS_OPT == 1)
+ *     - id Is used to identify the component
+ *     - rect Defines the boundings of the Box
+ *     - default_bg_color Is used if no ranges are present or in range
+ *     - default_fg_color Is used if no ranges are present or in range
+ *     - label Is a pointer to Label component
+ *     - value Is a pointer to Value component
  */
 struct Box
 {
