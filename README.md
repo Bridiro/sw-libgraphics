@@ -24,10 +24,11 @@ This library provides a simple yet powerful way to create graphical widgets for 
 ```
 sw-lib-graphics/
 ├── src/
-│   ├── graphics.c       # Implementation of graphical rendering
-│   └── main.c           # Demo application to display capabilities
+│   └── libgraphics.c    # Implementation of graphical rendering
 ├── inc/
-│   └── graphics.h       # Header file for graphics functions
+│   └── libgraphics.h    # Header file for graphics functions
+├── test/
+│   └── main.c           # Demo to display capabilities
 ├── libs/
 │   └── sw-lib-font/     # Font handling library
 ├── build/               # Compiled object files
@@ -37,37 +38,45 @@ sw-lib-graphics/
 ## Usage
 
 1. **Include the Header:**
-   Include `graphics.h` in your source file to access widget creation and rendering functions.
+   Include `libgraphics.h` in your source file to access widget creation and rendering functions.
 
    ```c
-   #include "graphics.h"
+   #include "libgraphics.h"
    ```
 
-2. **Init graphics API:**
-   ```c
-   struct GraphicsAPI api = {
-       .draw_pixel = draw_pixel_function,
-       .draw_rectangle = draw_rectangle_function,
-       .clear_screen = clear_screen_function
-   };
-   init_graphics_api(&api);
-   ```
-
-3. **Create and Configure Boxes:**
+2. **Create and Configure Boxes:**
    Initialize and configure boxes with labels, values, or both. Example:
 
    ```c
-   struct ColorRange ranges[] = {
-       {0.0f, 50.0f, 0x00FF00, 0x000000},
-       {50.1f, 100.0f, 0xFFFF00, 0x000000},
-       {100.1f, 200.0f, 0xFF0000, 0xFFFFFF}
+   struct Threshold ranges[] = {
+      {0.0f, 50.0f, 0x00FF00, 0x000000},
+      {50.1f, 100.0f, 0xFFFF00, 0x000000},
+      {100.1f, 200.0f, 0xFF0000, 0xFFFFFF}
    };
 
+   struct Thresholds thresholds[] = {
+      {ranges, 3}
+   };
+
+   struct Label l1;
+   create_label(&l1, "XD", (struct Coords){310, 95}, 0.4, CENTER);
+   struct Value v1;
+   create_value(&v1, 51, false, (struct Coords){140, 80}, 0.7, CENTER, (union Colors){ .thresholds = thresholds}, THRESHOLDS);
+
+   struct Value v2;
+   create_value(&v2, 51, true, (struct Coords){ 196, 80 }, 0.7, CENTER, (union Colors){ .slider = (struct Slider){0xff00ff00, ANCHOR_BOTTOM, 0, 200, 3}}, SLIDER);
+
+   struct Label l2;
+   create_label(&l2, "PROVA", (struct Coords){196, 80}, 0.7, CENTER);
+
+   struct Value v3;
+   create_value(&v3, 51.0, true, (struct Coords){ 196, 80 }, 0.7, CENTER, (union Colors){ .interpolation = (struct LinearInterpolation){0xff000000, 0xff00ff00, 0.0, 200.0}}, INTERPOLATION);
+
    struct Box boxes[] = {
-       { 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, create_label("XD", (struct Coords){310, 95}, 0.4, CENTER), create_value(51, false, (struct Coords){140, 80}, 0.6, CENTER, ranges, 3) },
-       { 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, create_label("SI", (struct Coords){196, 80}, 0.7, CENTER), NULL },
-       { 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff, create_label("PROVA", (struct Coords){196, 80}, 0.5, CENTER), NULL },
-       { 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL, create_value(51.0, true, (struct Coords){ 196, 80 }, 0.6, CENTER, ranges, 3) },
+       { 1, 0x1, { 2, 2, 397, 237 }, 0xff000000, 0xffffffff, &l1, &v1 },
+       { 1, 0x2, { 401, 2, 397, 237 }, 0xff000000, 0xffffffff, NULL, &v2 },
+       { 1, 0x3, { 2, 241, 397, 237 }, 0xff000000, 0xffffffff, &l2, NULL },
+       { 1, 0x4, { 401, 241, 397, 237 }, 0xff000000, 0xffffffff, NULL, &v3 }
    };
    ```
 
@@ -75,7 +84,7 @@ sw-lib-graphics/
    Call the rendering function to draw boxes on the screen:
 
    ```c
-   render_interface(boxes, 4);
+   render_interface(boxes, 4, draw_pixel_callback, draw_rectangle_callback, clear_screen_callback);
    ```
 
 4. **String Conversions:**
