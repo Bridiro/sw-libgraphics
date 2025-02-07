@@ -1,5 +1,5 @@
 /**
- * @file graphics.h
+ * @file libgraphics.h
  * @date 2024-12-13
  * @author Alessandro Bridi [ale.bridi15@gmail.com]
  *
@@ -13,7 +13,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "text.h"
+#include "libfont.h"
 
 /**
  * @brief Rectangle definition for the UI

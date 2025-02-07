@@ -17,9 +17,9 @@ endif
 BUILD_DIR = build
 
 # Sources and objects
-SOURCES = test/main.c src/graphics.c \
+SOURCES = test/main.c src/libgraphics.c \
 		libs/sw-libfont/src/font.c \
-		libs/sw-libfont/src/text.c
+		libs/sw-libfont/src/libfont.c
 		
 OBJECTS = $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(SOURCES)))
 

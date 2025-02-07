@@ -1,13 +1,12 @@
 /**
- * @file graphics.c
+ * @file libgraphics.c
  * @date 2024-12-13
  * @author Alessandro Bridi [ale.bridi15@gmail.com]
  *
  * @brief Graphics handling functions
  */
 
-#include "graphics.h"
-#include "text.h"
+#include "libgraphics.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>

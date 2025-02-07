@@ -1,7 +1,7 @@
 #include <SDL.h>
 #include <stdint.h>
 #include "SDL_timer.h"
-#include "graphics.h"
+#include "libgraphics.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 480
