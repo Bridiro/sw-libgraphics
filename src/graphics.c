@@ -41,7 +41,7 @@ uint32_t _interpolate_color(uint32_t color1, uint32_t color2, float min, float m
 
 void _extract_threshold(struct Box *box, uint32_t *bg_color, uint32_t *fg_color) {
     for (int i=0; i<box->value->colors.thresholds->thresholds_num; i++) {
-        if (box->value->colors.thresholds->threshold[i].min < box->value->value && box->value->value < box->value->colors.thresholds->threshold[i].max) {
+        if (box->value->colors.thresholds->threshold[i].min <= box->value->value && box->value->value <= box->value->colors.thresholds->threshold[i].max) {
             *bg_color = box->value->colors.thresholds->threshold[i].bg_color;
             *fg_color = box->value->colors.thresholds->threshold[i].fg_color;
         }
