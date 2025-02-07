@@ -4,7 +4,7 @@ OS = $(shell uname -s)
 
 # Flags and compiler
 CC = gcc
-CFLAGS = -Iinc -Ilibs/sw-lib-font/inc -Wall -Wextra
+CFLAGS = -Iinc -Ilibs/sw-libfont/inc -Wall -Wextra
 DEBUG_CFLAGS = "-g"
 LDFLAGS = -lSDL2 -lm 
 
@@ -18,12 +18,12 @@ BUILD_DIR = build
 
 # Sources and objects
 SOURCES = test/main.c src/graphics.c \
-		libs/sw-lib-font/src/font.c \
-		libs/sw-lib-font/src/text.c
+		libs/sw-libfont/src/font.c \
+		libs/sw-libfont/src/text.c
 		
 OBJECTS = $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(SOURCES)))
 
-vpath %.c src test libs/sw-lib-font/src
+vpath %.c src test libs/sw-libfont/src
 
 # Default build
 all: $(TARGET)
