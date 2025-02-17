@@ -17,7 +17,7 @@
     }
   ],
   "dependencies": {
-    "Bridiro/sw-libfont": "~1.0.0"
+    "sw-libfont": "https://github.com/Bridiro/sw-libfont.git"
   },
   "frameworks": "*",
   "platforms": "*"
