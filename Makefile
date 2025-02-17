@@ -4,7 +4,7 @@ OS = $(shell uname -s)
 
 # Flags and compiler
 CC = gcc
-CFLAGS = -Iinc -Ilibs/sw-libfont/inc -Wall -Wextra
+CFLAGS = -Iinclude -Ilibs/sw-libfont/include -Wall -Wextra
 DEBUG_CFLAGS = "-g"
 LDFLAGS = -lSDL2 -lm 
 
