@@ -16,10 +16,12 @@ void sdl_clear_screen()
 {
 }
 
-void sdl_draw_pixel(int x, int y, uint32_t color) {
+void sdl_draw_line(int x, int y, int lenght, uint32_t color) {
     SDL_SetRenderDrawColor(SDL_GetRenderer(SDL_GetWindowFromID(1)),
                            get_red(color), get_green(color), get_blue(color), get_alpha(color));
-    SDL_RenderDrawPoint(SDL_GetRenderer(SDL_GetWindowFromID(1)), x, y);
+    for (int i=0; i<lenght; i++) {
+        SDL_RenderDrawPoint(SDL_GetRenderer(SDL_GetWindowFromID(1)), x+i, y);
+    }
 }
 
 void sdl_draw_rectangle(int x, int y, int w, int h, uint32_t color) {
@@ -105,7 +107,7 @@ int main() {
         SDL_SetRenderDrawColor(sdl_ctx.renderer, 255, 255, 255, 255);
         SDL_RenderClear(sdl_ctx.renderer);
 
-        render_interface(boxes, 4, sdl_draw_pixel, sdl_draw_rectangle);
+        render_interface(boxes, 4, sdl_draw_line, sdl_draw_rectangle);
 
         if (SDL_GetTicks() - last_time > 60) {
             struct Box *box = get_box(boxes, 4, 0x1);

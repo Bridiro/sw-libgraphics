@@ -30,8 +30,9 @@ sw-lib-graphics/
 ├── test/
 │   └── main.c           # Demo to display capabilities
 ├── libs/
-│   └── sw-lib-font/     # Font handling library
+│   └── sw-libfont/      # Font handling library
 ├── build/               # Compiled object files
+├── library.json         # Json file used by PlatformIO to identify libraries
 └── app                  # Final compiled application
 ```
 
@@ -84,7 +85,7 @@ sw-lib-graphics/
    Call the rendering function to draw boxes on the screen:
 
    ```c
-   render_interface(boxes, 4, draw_pixel_callback, draw_rectangle_callback, clear_screen_callback);
+   render_interface(boxes, 4, draw_line_callback, draw_rectangle_callback, clear_screen_callback);
    ```
 
 4. **String Conversions:**

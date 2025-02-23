@@ -49,9 +49,10 @@ struct Coords {
  * 
  * @param x Position in pixel on x axis
  * @param y Position in pixel on y axis
+ * @param lenght Lenght in pixel of the line
  * @param color Color in ARGB format
  */
- typedef void (*draw_pixel_callback_t)(int x, int y, uint32_t color);
+ typedef void (*draw_line_callback_t)(int x, int y, int lenght, uint32_t color);
 #endif
 
  /**
@@ -235,7 +236,7 @@ struct Box {
  * @param clear_screen Clear screen callback
  */
 void render_interface(struct Box *boxes, uint16_t num,
-                      draw_pixel_callback_t draw_pixel,
+                      draw_line_callback_t draw_line,
                       draw_rectangle_callback_t draw_rectangle
 #if GRAPHICS_OPT == 0
                       ,clear_screen_callback_t clear_screen

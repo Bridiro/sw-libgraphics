@@ -65,7 +65,7 @@ void _calculate_slider_position(struct Box *box, uint32_t *x, uint32_t *y, uint3
 }
 
 
-void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rectangle_callback_t draw_rectangle) {
+void _draw_text_box(struct Box *box, draw_line_callback_t draw_line, draw_rectangle_callback_t draw_rectangle) {
 #if GRAPHICS_OPT
     if (!box->updated) return;
 #endif
@@ -104,7 +104,7 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
                    box->value->align,
                    buf, fg_color,
                    box->value->font_size,
-                   draw_pixel);
+                   draw_line);
     }
 
     if (box->label) {
@@ -115,13 +115,13 @@ void _draw_text_box(struct Box *box, draw_pixel_callback_t draw_pixel, draw_rect
                    box->label->text,
                    fg_color,
                    box->label->font_size,
-                   draw_pixel);
+                   draw_line);
     }
 }
 
 
 void render_interface(struct Box *text_boxes, uint16_t num,
-                      draw_pixel_callback_t draw_pixel,
+                      draw_line_callback_t draw_line,
                       draw_rectangle_callback_t draw_rectangle
 #if GRAPHICS_OPT == 0
                       ,clear_screen_callback_t clear_screen
@@ -133,7 +133,7 @@ void render_interface(struct Box *text_boxes, uint16_t num,
     clear_screen();
 #endif
     for (int i = 0; i < num; i++) {
-        _draw_text_box(text_boxes + i, draw_pixel, draw_rectangle);
+        _draw_text_box(text_boxes + i, draw_line, draw_rectangle);
     }
 }
 
