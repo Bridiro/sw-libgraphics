@@ -16,7 +16,7 @@ void sdl_clear_screen()
 {
 }
 
-void sdl_draw_line(int x, int y, int lenght, uint32_t color) {
+void sdl_draw_line(uint16_t x, uint16_t y, uint16_t lenght, uint32_t color) {
     SDL_SetRenderDrawColor(SDL_GetRenderer(SDL_GetWindowFromID(1)),
                            get_red(color), get_green(color), get_blue(color), get_alpha(color));
     for (int i=0; i<lenght; i++) {
@@ -24,7 +24,7 @@ void sdl_draw_line(int x, int y, int lenght, uint32_t color) {
     }
 }
 
-void sdl_draw_rectangle(int x, int y, int w, int h, uint32_t color) {
+void sdl_draw_rectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint32_t color) {
     SDL_Rect rect = {x, y, w, h};
     SDL_SetRenderDrawColor(SDL_GetRenderer(SDL_GetWindowFromID(1)),
                            get_red(color), get_green(color), get_blue(color), get_alpha(color));

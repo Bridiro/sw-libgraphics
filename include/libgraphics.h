@@ -25,10 +25,10 @@
  *     - h Is the height in pixel
  */
 struct Rect {
-    uint32_t x;
-    uint32_t y;
-    uint32_t w;
-    uint32_t h;
+    uint16_t x;
+    uint16_t y;
+    uint16_t w;
+    uint16_t h;
 };
 
 /**
@@ -39,8 +39,8 @@ struct Rect {
  *     - y Is the position in pixel on the y axis
  */
 struct Coords {
-    uint32_t x;
-    uint32_t y;
+    uint16_t x;
+    uint16_t y;
 };
 
 #ifndef TEXT_H
@@ -52,7 +52,7 @@ struct Coords {
  * @param lenght Lenght in pixel of the line
  * @param color Color in ARGB format
  */
- typedef void (*draw_line_callback_t)(int x, int y, int lenght, uint32_t color);
+ typedef void (*draw_line_callback_t)(uint16_t x, uint16_t y, uint16_t lenght, uint32_t color);
 #endif
 
  /**
@@ -64,7 +64,7 @@ struct Coords {
   * @param h Height in pixel of rectangle
   * @param color Color in ARGB format
   */
- typedef void (*draw_rectangle_callback_t)(int x, int y, int w, int h, uint32_t color);
+ typedef void (*draw_rectangle_callback_t)(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint32_t color);
 
  /**
   * @brief Function used to clear screen (user decides the color)
@@ -159,7 +159,7 @@ struct Slider {
     enum AnchorSlider anchor;
     float max;
     float min;
-    uint32_t margin;
+    uint16_t margin;
 };
 
 /**
