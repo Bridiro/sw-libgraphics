@@ -83,7 +83,7 @@ struct Coords {
 struct Label {
     char *text;
     struct Coords pos;
-    float font_size;
+    uint16_t font_size;
     enum FontAlign align;
 };
 
@@ -296,7 +296,7 @@ struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id);
  * @param font_size Text size
  * @param align Alignment of font
  */
-void create_label(struct Label *label, char *text, struct Coords pos, float font_size, enum FontAlign align);
+void create_label(struct Label *label, char *text, struct Coords pos, uint16_t font_size, enum FontAlign align);
 
 /**
  * @brief Utility to populate struct Value
@@ -310,7 +310,7 @@ void create_label(struct Label *label, char *text, struct Coords pos, float font
  * @param colors Pointer to color ranges
  * @param colors_num Number of color ranges
  */
- void create_value(struct Value *value, float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, union Colors colors, enum ColorType color_type);
+ void create_value(struct Value *value, float val, bool is_float, struct Coords pos, uint16_t font_size, enum FontAlign align, union Colors colors, enum ColorType color_type);
 
 
 #endif // GRAPHICS_H

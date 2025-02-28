@@ -169,7 +169,7 @@ struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id) {
 }
 
 
-void create_label(struct Label *label, char *text, struct Coords pos, float font_size, enum FontAlign align) {
+void create_label(struct Label *label, char *text, struct Coords pos, uint16_t font_size, enum FontAlign align) {
     if (label) {
         label->text = text;
         label->pos = pos;
@@ -179,7 +179,7 @@ void create_label(struct Label *label, char *text, struct Coords pos, float font
 }
 
 
-void create_value(struct Value *value, float val, bool is_float, struct Coords pos, float font_size, enum FontAlign align, union Colors colors, enum ColorType color_type) {
+void create_value(struct Value *value, float val, bool is_float, struct Coords pos, uint16_t font_size, enum FontAlign align, union Colors colors, enum ColorType color_type) {
     if (value) {
         value->value = val;
         value->is_float = is_float;
