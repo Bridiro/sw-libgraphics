@@ -17,9 +17,7 @@ endif
 BUILD_DIR = build
 
 # Sources and objects
-SOURCES = test/main.c src/libgraphics.c \
-		libs/sw-libfont/src/font.c \
-		libs/sw-libfont/src/libfont.c
+SOURCES = $(wildcard src/*.c test/*c libs/sw-libfont/src/*.c)
 		
 OBJECTS = $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(SOURCES)))
 

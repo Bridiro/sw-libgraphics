@@ -102,6 +102,7 @@ void _draw_text_box(struct Box *box, draw_line_callback_t draw_line, draw_rectan
         draw_text(box->rect.x + box->value->pos.x,
                    box->rect.y + box->value->pos.y,
                    box->value->align,
+                   box->value->font,
                    buf, fg_color,
                    box->value->font_size,
                    draw_line);
@@ -112,6 +113,7 @@ void _draw_text_box(struct Box *box, draw_line_callback_t draw_line, draw_rectan
         draw_text(box->rect.x + box->label->pos.x,
                    box->rect.y + box->label->pos.y,
                    box->label->align,
+                   box->label->font,
                    box->label->text,
                    fg_color,
                    box->label->font_size,
@@ -169,21 +171,23 @@ struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id) {
 }
 
 
-void create_label(struct Label *label, char *text, struct Coords pos, uint16_t font_size, enum FontAlign align) {
+void create_label(struct Label *label, char *text, struct Coords pos, FontName font, uint16_t font_size, FontAlign align) {
     if (label) {
         label->text = text;
         label->pos = pos;
+        label->font = font;
         label->font_size = font_size;
         label->align = align;
     }
 }
 
 
-void create_value(struct Value *value, float val, bool is_float, struct Coords pos, uint16_t font_size, enum FontAlign align, union Colors colors, enum ColorType color_type) {
+void create_value(struct Value *value, float val, bool is_float, struct Coords pos, FontName font, uint16_t font_size, FontAlign align, union Colors colors, enum ColorType color_type) {
     if (value) {
         value->value = val;
         value->is_float = is_float;
         value->pos = pos;
+        value->font = font;
         value->font_size = font_size;
         value->align = align;
         value->colors = colors;

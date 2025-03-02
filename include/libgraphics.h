@@ -77,14 +77,16 @@ struct Coords {
  * @details
  *     - text Is a pointer to the string to plot
  *     - pos Is the position where to plot the text
+ *     - font Font name (defined in font.h)
  *     - font_size Defines the size of the text
  *     - align Defines the alignement of the text
  */
 struct Label {
     char *text;
     struct Coords pos;
+    FontName font;
     uint16_t font_size;
-    enum FontAlign align;
+    FontAlign align;
 };
 
 /**
@@ -187,6 +189,7 @@ union Colors {
  *     - value Is the value to display
  *     - is_float Tells if the value is to be casted
  *     - pos Is the position there to plot the value
+ *     - font Font name, defined in font.h
  *     - font_size Defines the size of the text
  *     - align Defines the alignement of the text
  *     - colors Contains one possible coloring method
@@ -196,8 +199,9 @@ struct Value {
     float value;
     bool is_float;
     struct Coords pos;
+    FontName font;
     float font_size;
-    enum FontAlign align;
+    FontAlign align;
     union Colors colors;
     enum ColorType color_type;
 };
@@ -293,10 +297,11 @@ struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id);
  * @param label The label struct to populate
  * @param text Text in the label
  * @param pos Position of the text
+ * @param font Font name (defined in font.h)
  * @param font_size Text size
  * @param align Alignment of font
  */
-void create_label(struct Label *label, char *text, struct Coords pos, uint16_t font_size, enum FontAlign align);
+void create_label(struct Label *label, char *text, struct Coords pos, FontName font, uint16_t font_size, FontAlign align);
 
 /**
  * @brief Utility to populate struct Value
@@ -305,12 +310,13 @@ void create_label(struct Label *label, char *text, struct Coords pos, uint16_t f
  * @param val Value
  * @param is_float Says is the value is to cast to int
  * @param pos Position of the value
+ * @param font Font name (defined in font.h)
  * @param font_size Value size
  * @param align ALignment of font
  * @param colors Pointer to color ranges
  * @param colors_num Number of color ranges
  */
- void create_value(struct Value *value, float val, bool is_float, struct Coords pos, uint16_t font_size, enum FontAlign align, union Colors colors, enum ColorType color_type);
+ void create_value(struct Value *value, float val, bool is_float, struct Coords pos, FontName font, uint16_t font_size, FontAlign align, union Colors colors, enum ColorType color_type);
 
 
 #endif // GRAPHICS_H
