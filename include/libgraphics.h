@@ -52,10 +52,10 @@ struct Coords {
  * @param lenght Lenght in pixel of the line
  * @param color Color in ARGB format
  */
- typedef void (*draw_line_callback_t)(uint16_t x, uint16_t y, uint16_t lenght, uint32_t color);
+typedef void (*draw_line_callback_t)(uint16_t x, uint16_t y, uint16_t lenght, uint32_t color);
 #endif
 
- /**
+/**
   * @brief Callback to draw a rectangle (may use DMA2D)
   *
   * @param x Position in piexel on x axis
@@ -64,12 +64,12 @@ struct Coords {
   * @param h Height in pixel of rectangle
   * @param color Color in ARGB format
   */
- typedef void (*draw_rectangle_callback_t)(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint32_t color);
+typedef void (*draw_rectangle_callback_t)(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint32_t color);
 
- /**
+/**
   * @brief Function used to clear screen (user decides the color)
   */
- typedef void (*clear_screen_callback_t)(void);
+typedef void (*clear_screen_callback_t)(void);
 
 /**
  * @brief Defines one component of the UI
@@ -82,7 +82,7 @@ struct Coords {
  *     - align Defines the alignement of the text
  */
 struct Label {
-    char *text;
+    char* text;
     struct Coords pos;
     FontName font;
     uint16_t font_size;
@@ -102,7 +102,7 @@ struct Threshold {
     float min;
     float max;
     uint32_t bg_color;
-    uint32_t fg_color;  
+    uint32_t fg_color;
 };
 
 /**
@@ -113,7 +113,7 @@ struct Threshold {
  *     - thresholds_num Number of thresholds in the array
  */
 struct Thresholds {
-    struct Threshold *threshold;
+    struct Threshold* threshold;
     uint8_t thresholds_num;
 };
 
@@ -177,7 +177,7 @@ enum ColorType {
  * @brief Contains the struct that defines one coloring method. ColorType should match the one placed in here.
  */
 union Colors {
-    struct Thresholds *thresholds;
+    struct Thresholds* thresholds;
     struct LinearInterpolation interpolation;
     struct Slider slider;
 };
@@ -226,8 +226,8 @@ struct Box {
     struct Rect rect;
     uint32_t default_bg_color;
     uint32_t default_fg_color;
-    struct Label *label;
-    struct Value *value;
+    struct Label* label;
+    struct Value* value;
 };
 
 /**
@@ -239,13 +239,12 @@ struct Box {
  * @param draw_rectangle Draw rectangle callback
  * @param clear_screen Clear screen callback
  */
-void render_interface(struct Box *boxes, uint16_t num,
-                      draw_line_callback_t draw_line,
-                      draw_rectangle_callback_t draw_rectangle
+void render_interface(struct Box* boxes, uint16_t num, draw_line_callback_t draw_line, draw_rectangle_callback_t draw_rectangle
 #if GRAPHICS_OPT == 0
-                      ,clear_screen_callback_t clear_screen
+                      ,
+                      clear_screen_callback_t clear_screen
 #endif
-                      );
+);
 
 /**
  * @brief Utility to extract 8 bit alpha value from ARGB8888 format
@@ -289,7 +288,7 @@ uint8_t get_blue(uint32_t color);
  *     - Box pointer if found
  *     - NULL if not found
  */
-struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id);
+struct Box* get_box(struct Box* boxes, uint16_t num, uint16_t id);
 
 /**
  * @brief Utility to populate struct Label
@@ -301,7 +300,7 @@ struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id);
  * @param font_size Text size
  * @param align Alignment of font
  */
-void create_label(struct Label *label, char *text, struct Coords pos, FontName font, uint16_t font_size, FontAlign align);
+void create_label(struct Label* label, char* text, struct Coords pos, FontName font, uint16_t font_size, FontAlign align);
 
 /**
  * @brief Utility to populate struct Value
@@ -316,7 +315,6 @@ void create_label(struct Label *label, char *text, struct Coords pos, FontName f
  * @param colors Pointer to color ranges
  * @param colors_num Number of color ranges
  */
- void create_value(struct Value *value, float val, bool is_float, struct Coords pos, FontName font, uint16_t font_size, FontAlign align, union Colors colors, enum ColorType color_type);
-
+void create_value(struct Value* value, float val, bool is_float, struct Coords pos, FontName font, uint16_t font_size, FontAlign align, union Colors colors, enum ColorType color_type);
 
 #endif // GRAPHICS_H

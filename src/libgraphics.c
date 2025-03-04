@@ -12,10 +12,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 uint32_t _interpolate_color(uint32_t color1, uint32_t color2, float min, float max, float actual_value) {
-    if (actual_value < min) actual_value = min;
-    if (actual_value > max) actual_value = max;
+    if (actual_value < min)
+        actual_value = min;
+    if (actual_value > max)
+        actual_value = max;
 
     float t = (actual_value - min) / (max - min);
 
@@ -37,9 +38,8 @@ uint32_t _interpolate_color(uint32_t color1, uint32_t color2, float min, float m
     return (a << 24) | (r << 16) | (g << 8) | b;
 }
 
-
-void _extract_threshold(struct Box *box, uint32_t *bg_color, uint32_t *fg_color) {
-    for (int i=0; i<box->value->colors.thresholds->thresholds_num; i++) {
+void _extract_threshold(struct Box* box, uint32_t* bg_color, uint32_t* fg_color) {
+    for (int i = 0; i < box->value->colors.thresholds->thresholds_num; i++) {
         if (box->value->colors.thresholds->threshold[i].min <= box->value->value && box->value->value <= box->value->colors.thresholds->threshold[i].max) {
             *bg_color = box->value->colors.thresholds->threshold[i].bg_color;
             *fg_color = box->value->colors.thresholds->threshold[i].fg_color;
@@ -47,8 +47,7 @@ void _extract_threshold(struct Box *box, uint32_t *bg_color, uint32_t *fg_color)
     }
 }
 
-
-void _calculate_slider_position(struct Box *box, uint32_t *x, uint32_t *y, uint32_t *width, uint32_t *height) {
+void _calculate_slider_position(struct Box* box, uint32_t* x, uint32_t* y, uint32_t* width, uint32_t* height) {
     float percent = 1.f - ((box->value->value - box->value->colors.slider.min) /
                            (box->value->colors.slider.max - box->value->colors.slider.min));
     if (box->value->colors.slider.anchor == ANCHOR_TOP || box->value->colors.slider.anchor == ANCHOR_BOTTOM) {
@@ -64,10 +63,10 @@ void _calculate_slider_position(struct Box *box, uint32_t *x, uint32_t *y, uint3
     }
 }
 
-
-void _draw_text_box(struct Box *box, draw_line_callback_t draw_line, draw_rectangle_callback_t draw_rectangle) {
+void _draw_text_box(struct Box* box, draw_line_callback_t draw_line, draw_rectangle_callback_t draw_rectangle) {
 #if GRAPHICS_OPT
-    if (!box->updated) return;
+    if (!box->updated)
+        return;
 #endif
     uint32_t bg_color = box->default_bg_color;
     uint32_t fg_color = box->default_fg_color;
@@ -96,40 +95,38 @@ void _draw_text_box(struct Box *box, draw_line_callback_t draw_line, draw_rectan
         if (box->value->is_float) {
             snprintf(buf, sizeof(buf), "%.2f", box->value->value);
         } else {
-            snprintf(buf, sizeof(buf), "%d", (int) box->value->value);
+            snprintf(buf, sizeof(buf), "%d", (int)box->value->value);
         }
         // Plot the value
         draw_text(box->rect.x + box->value->pos.x,
-                   box->rect.y + box->value->pos.y,
-                   box->value->align,
-                   box->value->font,
-                   buf, fg_color,
-                   box->value->font_size,
-                   draw_line);
+                  box->rect.y + box->value->pos.y,
+                  box->value->align,
+                  box->value->font,
+                  buf,
+                  fg_color,
+                  box->value->font_size,
+                  draw_line);
     }
 
     if (box->label) {
         // Plot the label
         draw_text(box->rect.x + box->label->pos.x,
-                   box->rect.y + box->label->pos.y,
-                   box->label->align,
-                   box->label->font,
-                   box->label->text,
-                   fg_color,
-                   box->label->font_size,
-                   draw_line);
+                  box->rect.y + box->label->pos.y,
+                  box->label->align,
+                  box->label->font,
+                  box->label->text,
+                  fg_color,
+                  box->label->font_size,
+                  draw_line);
     }
 }
 
-
-void render_interface(struct Box *text_boxes, uint16_t num,
-                      draw_line_callback_t draw_line,
-                      draw_rectangle_callback_t draw_rectangle
+void render_interface(struct Box* text_boxes, uint16_t num, draw_line_callback_t draw_line, draw_rectangle_callback_t draw_rectangle
 #if GRAPHICS_OPT == 0
-                      ,clear_screen_callback_t clear_screen
+                      ,
+                      clear_screen_callback_t clear_screen
 #endif
-                      )
-{
+) {
 // Do not clear full screen for max optimization (less time spent)
 #if GRAPHICS_OPT == 0
     clear_screen();
@@ -139,30 +136,25 @@ void render_interface(struct Box *text_boxes, uint16_t num,
     }
 }
 
-
 uint8_t get_alpha(uint32_t color) {
     return (color >> 24) & 0xff;
 }
-
 
 uint8_t get_red(uint32_t color) {
     return (color >> 16) & 0xff;
 }
 
-
 uint8_t get_green(uint32_t color) {
     return (color >> 8) & 0xff;
 }
-
 
 uint8_t get_blue(uint32_t color) {
     return color & 0xff;
 }
 
-
-struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id) {
+struct Box* get_box(struct Box* boxes, uint16_t num, uint16_t id) {
     // Loops and search for IDs (can be good for CAN IDs)
-    for (int i=0; i<num; i++) {
+    for (int i = 0; i < num; i++) {
         if ((boxes + i)->id == id) {
             return (boxes + i);
         }
@@ -170,8 +162,7 @@ struct Box *get_box(struct Box *boxes, uint16_t num, uint16_t id) {
     return NULL;
 }
 
-
-void create_label(struct Label *label, char *text, struct Coords pos, FontName font, uint16_t font_size, FontAlign align) {
+void create_label(struct Label* label, char* text, struct Coords pos, FontName font, uint16_t font_size, FontAlign align) {
     if (label) {
         label->text = text;
         label->pos = pos;
@@ -181,8 +172,7 @@ void create_label(struct Label *label, char *text, struct Coords pos, FontName f
     }
 }
 
-
-void create_value(struct Value *value, float val, bool is_float, struct Coords pos, FontName font, uint16_t font_size, FontAlign align, union Colors colors, enum ColorType color_type) {
+void create_value(struct Value* value, float val, bool is_float, struct Coords pos, FontName font, uint16_t font_size, FontAlign align, union Colors colors, enum ColorType color_type) {
     if (value) {
         value->value = val;
         value->is_float = is_float;
